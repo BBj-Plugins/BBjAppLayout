@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>BBjAppLayout Widget</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta
+      name="description"
+      content="A DWC widget for building common application layouts"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0"
+    />
+    <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/pure.css"
+    />
+    <script
+      type="module"
+      src="//s3-eu-west-1.amazonaws.com/cdn.bbx.kitchen/next/bbj-ui.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="//s3-eu-west-1.amazonaws.com/cdn.bbx.kitchen/next/bbj-ui.js"
+    ></script>
+
+    <link
+      rel="stylesheet"
+      href="//s3-eu-west-1.amazonaws.com/cdn.bbx.kitchen/next/bbj-ui.css"
+    />
+    <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/gh/hyyan/bbj-docsify@0.0.3/theme.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/gh/hyyan/bbj-docsify@0.0.3/plugins/theme-picker/theme-picker.min.css"
+    />
+    <style>
+      :root {
+        --bbj-preview-primary-color: black;
+        --bbj-preview-secondary-color: #333;
+      }
+
+      .markdown-section {
+        max-width: 680px;
+      }
+
+      .code-block__button--html {
+        display: none;
+      }
+
+      .theme-picker {
+        top: 0.25rem;
+        right: 100px;
+      }
+
+      .demo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 4rem 0;
+        width: 1024px;
+        margin-left: -200px;
+      }
+
+      .demo--phone {
+        max-width: 375px;
+        margin: 4rem auto;
+        justify-content: center;
+      }
+
+      .demo__preview{
+        position: relative;
+        width: 100%;
+        height: 600px;
+        border-radius: 32px;
+        overflow: hidden;
+        box-shadow: 0 0 0 10px black, 0 3px 22px black;
+        outline: thin solid black;
+      }
+
+      .demo--phone .demo__preview {
+        height: 700px;
+      }
+
+      .demo__preview__content {
+        width: 100%;
+        height: 100%;
+        background: var(--bbj-surface-3);
+      }
+
+      .demo__preview__content iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+
+      .demo__buttons {
+        background: var(--bbj-preview-primary-color);
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        padding: 1rem;
+        border-radius: var(--bbj-border-radius-m);
+        margin-top: -60px;
+        z-index: 1;
+        box-shadow: var(--bbj-shadow-m);
+      }
+
+      .demo__buttons a,
+      .demo__buttons a:visited {
+        color: rgba(255, 255, 255, 0.8);
+        cursor: pointer;
+        text-decoration: none;
+        user-select: none;
+      }
+
+      .demo__buttons a:active,
+      .demo__buttons a:hover {
+        color: rgba(255, 255, 255, 1);
+      }
+
+      .demo__code {
+        display: none;
+        z-index: 2;
+        width: 80%;
+      }
+
+      .demo__code pre {
+        margin-top: 22px;
+        border: thin solid var(--bbj-color-default-dark);
+        border-radius: var(--bbj-border-radius-m);
+      }
+
+      .demo--phone .demo__code {
+        width: 220%;
+      }
+
+      .demo__buttons--hasFooter {
+        margin-top: -120px;
+        margin-bottom: 60px;
+      }
+
+      @media (max-width: 600px) {
+        .demo__code,
+        .demo--phone .demo__code {
+          width: 100%;
+        }
+      }
+
+      @media (max-width: 1024px) {
+        .demo {
+          width: 100%;
+          margin-left: 0;
+        }
+      }
+
+      .line-numbers[data-lang] {
+        overflow: auto !important;
+      }
+
+      .line-numbers[data-lang] code {
+        overflow: visible;
+        padding-left: 0;
+      }
+
+      .line-numbers .line-numbers-rows {
+        border-right: 2px solid var(--bbj-color-default);
+        /* Fix paddings to align with code.*/
+        padding: var(--bbj-space-m) 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app"></div>
+    <script>
+      window.$docsify = {
+        themeColor: "var(--bbj-color-primary)",
+        name: "",
+        repo: "https://github.com/BBj-Plugins/BBjAppLayout",
+        coverpage: false,
+        auto2top: true,
+        plugins: [
+          function (hook) {
+            hook.doneEach(function () {
+              const syncTheme = (theme) => {
+                const iframes = document.querySelectorAll("iframe");
+                iframes.forEach((iframe) => {
+                  iframe.contentWindow.document.documentElement.setAttribute(
+                    "data-app-theme",
+                    theme
+                  );
+                });
+              };
+
+              const observer = new MutationObserver(() => {
+                syncTheme(
+                  document.documentElement.getAttribute("data-app-theme")
+                );
+              });
+
+              observer.observe(document.documentElement, {
+                subtree: false,
+                childList: false,
+                attributeFilter: ["data-app-theme"],
+              });
+
+              const toggleCodeButtons = document.querySelectorAll(
+                "[data-action-toggle-code]"
+              );
+
+              toggleCodeButtons.forEach((button) => {
+                button.addEventListener("click", () => {
+                  const codeBlock = button
+                    .closest(".demo")
+                    .querySelector(".demo__code");
+                  codeBlock.style.display =
+                    codeBlock.style.display === "none" ||
+                    !codeBlock.style.display
+                      ? "block"
+                      : "none";
+
+                  const icon = button.querySelector("bbj-icon");
+                  icon.setAttribute(
+                    "name",
+                    icon.getAttribute("name") === "chevron-down"
+                      ? "chevron-up"
+                      : "chevron-down"
+                  );
+                });
+              });
+
+              const openLinkButtons = document.querySelectorAll(
+                "[data-action-open-link]"
+              );
+
+              openLinkButtons.forEach((button) => {
+                button.addEventListener("click", () => {
+                  const iframe = button
+                    .closest(".demo")
+                    .querySelector("iframe");
+                  window.open(iframe.src.replace(".html", ""), "_blank");
+                });
+              });
+
+              Prism.highlightAll();
+            });
+          },
+        ],
+      };
+    </script>
+    <!-- Docsify v4 -->
+    <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-bbj.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    <script src="//cdn.jsdelivr.net/gh/hyyan/bbj-docsify@0.0.3/plugins/theme-picker/theme-picker.min.js"></script>
+    <script src="//unpkg.com/docsify-copy-code@2"></script>
+  </body>
+</html>

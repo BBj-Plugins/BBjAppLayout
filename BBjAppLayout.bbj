@@ -1,0 +1,725 @@
+rem package BBjAppLayout
+rem /**
+rem  * This file is part of the BBjAppLayout plugin.
+rem  * (c) Basis Europe <eu@basis.cloud>
+rem  *
+rem  * For the full copyright and license information, please view the LICENSE
+rem  * file that was distributed with this source code.
+rem  */
+use com.google.gson.JsonParser
+use com.google.gson.JsonObject
+rem /**
+rem  * BBjAppLayoutEvent
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjAppLayoutEvent
+
+  field protected BBjAppLayout Layout!
+  field protected BBjNumber Opened!
+  field protected BBjNumber Popover!
+  rem /**
+  rem  * Construct a new BBjAppLayoutEvent
+  rem  *
+  rem  * @param layout! The instance of the BBjAppLayout object
+  rem  * @param opened! The drawer's opened state
+  rem  * @param popover! The drawer's popover state
+  rem  */
+  method public BBjAppLayoutEvent(BBjAppLayout layout!, BBjNumber drawerOpened!, BBjNumber drawerPopover!)
+    #Layout! = layout!
+    #Opened! = drawerOpened!
+    #Popover! = drawerPopover!
+  methodend
+  rem /**
+  rem  * Check if the drawer is opened
+  rem  */
+  method public BBjNumber isDrawerOpened()
+    methodret #Opened!
+  methodend
+  rem /**
+  rem  *  Check if the drawer is popover
+  rem  */
+  method public BBjNumber isDrawerPopover()
+    methodret #Popover!
+  methodend
+  rem /**
+  rem  * Get the layout instance
+  rem  *
+  rem  * @return BBjAppLayoutEvent
+  rem  */
+  method public BBjAppLayout getLayout()
+    methodret #Layout!
+  methodend
+  rem /**
+  rem  * Alias for `BBjAppLayoutEvent.getLayout()`
+  rem  *
+  rem  * @return BBjAppLayoutEvent
+  rem  */
+  method public BBjAppLayout getControl()
+    methodret #getLayout()
+  methodend
+
+classend
+rem /**
+rem  * BBjAppLayout is a BBj API class that provides a simple way to create a layout for a BBj application.
+rem  *
+rem  * The layout is responsive and it provides a header, a footer , a drawer, and content area.
+rem  * The header and footer are fixed and the drawer slides in and out of the viewport
+rem  * and the content is scrollable.
+rem  *
+rem  * @author Hyyan Abo Fakher
+rem  */
+class public BBjAppLayout
+  rem /**
+  rem  * A constant to use to place the drawer at the left side of the layout
+  rem  */
+  field public static BBjNumber DRAWER_PLACEMENT_LEFT = 2
+  rem /**
+  rem  * A constant to use to place the drawer at the right side of the layout
+  rem  */
+  field public static BBjNumber DRAWER_PLACEMENT_RIGHT = 4
+  rem /**
+  rem  * A constant to hide the drawer of the layout
+  rem  */
+  field public static BBjNumber DRAWER_PLACEMENT_HIDDEN = 8
+  rem /**
+  rem  * A constant which defines that the shadow should be hidden
+  rem  */
+  field public static BBjNumber SHADOW_HIDDEN = 16
+  rem /**
+  rem  * A constant which defines that the shadow should be shown on scroll
+  rem  */
+  field public static BBjNumber SHADOW_SCROLL = 32
+  rem /**
+  rem  * A constant which defines that the shadow should always be visible
+  rem  */
+  field public static BBjNumber SHADOW_ALWAYS = 64
+  rem /**
+  rem  * A constant to use for the drawer opened event
+  rem  */
+  field public static BBjNumber ON_DRAWER_OPENED = 128
+  rem /**
+  rem  * A constant to use for the drawer closed event
+  rem  */
+  field public static BBjNumber ON_DRAWER_CLOSED = 256
+  rem /**
+  rem  * A constant to use for the drawer toggled event
+  rem  */
+  field public static BBjNumber ON_DRAWER_TOGGLED = 512
+  rem /**
+  rem  * The app's drawer child window
+  rem  */
+  field public BBjChildWindow Drawer!
+  rem /**
+  rem  * The app's header child window
+  rem  */
+  field public BBjChildWindow Header!
+  rem /**
+  rem  * The app's content child window
+  rem  */
+  field public BBjChildWindow Content!
+  rem /**
+  rem  * The app's footer child window
+  rem  */
+  field public BBjChildWindow Footer!
+  field protected BBjString UUID! = java.util.UUID.randomUUID().toString()
+  field protected BBjChildWindow Canvas!
+  field protected BBjHtmlView HTMLView!
+  rem /**
+  rem * Construct a new BBjAppLayout
+  rem *
+  rem * @param wnd! the window instance
+  rem */
+  method public BBjAppLayout(BBjWindow wnd!)
+    #Canvas! = wnd!.addChildWindow(wnd!.getAvailableControlID(), "", $00108800$, BBjAPI().getSysGui().getAvailableContext())
+    rem setup a hidden HTMLView to handle events and execute scripts
+    content! = "<bbj-app-layout fit-viewport data-layout=""" + #getUUID() + """></bbj-app-layout>"
+    #HTMLView! = #Canvas!.addHtmlView(32767, content!)
+    #HTMLView!.setAttribute("data-hv", #getUUID())
+    #HTMLView!.setOpaque(0)
+    #HTMLView!.setNoEdge(1)
+    #HTMLView!.setTabTraversable(0)
+    #HTMLView!.setFocusable(0)
+    #HTMLView!.setCallback(BBjAPI.ON_NATIVE_JAVASCRIPT, #this!, "handleJavascriptEvents")
+    script! = "" +
+:    "(() => {" +
+:    " const container = document.querySelector('[data-hv=""" + #getUUID() + """]');" +
+:    " const layout = document.querySelector('[data-layout=""" + #getUUID() + """]');" +
+:    " const handler = ev => {" +
+:    "  if(!container || !container.basisDispatchCustomEvent) return;" +
+:    "  if(!ev.target.isSameNode(layout)) return;" +
+:    "  const detail = {" +
+:    "   drawerOpened: layout.drawerOpened," +
+:    "   drawerPopover: layout.drawerPopover" +
+:    "  };" +
+:    "  container.basisDispatchCustomEvent(container, {type: ev.type, detail});" +
+:    "  container.basisDispatchCustomEvent(container, {type:'bbj-drawer-toggled', detail});" +
+:    " };" +
+:    " layout.addEventListener('bbj-drawer-opened', handler);"+
+:    " layout.addEventListener('bbj-drawer-closed', handler);"+
+:    "})()"
+    #HTMLView!.executeAsyncScript(script!)
+    #setDrawer(#Canvas!.addChildWindow(32766, "", $00108800$, BBjAPI().getSysGui().getAvailableContext()))
+    #setHeader(#Canvas!.addChildWindow(32765, "", $00108800$, BBjAPI().getSysGui().getAvailableContext()))
+    #setContent(#Canvas!.addChildWindow(32764, "", $00108800$, BBjAPI().getSysGui().getAvailableContext()))
+    #setFooter(#Canvas!.addChildWindow(32763, "", $00108800$, BBjAPI().getSysGui().getAvailableContext()))
+  methodend
+  rem /**
+  rem  * Get the unique auto generated id of the component.
+  rem  *
+  rem  * @return BBjString
+  rem  */
+  method public BBjString getUUID()
+    methodret #UUID!
+  methodend
+  rem /**
+  rem  * Get the canvas's id
+  rem  *
+  rem  * @return BBjNumber
+  rem  */
+  method public BBjNumber getID()
+    methodret #getCanvas().getID()
+  methodend
+  rem /**
+  rem  * Get the instance of the component's Canvas
+  rem  *
+  rem  * @return The canvas's instance
+  rem  */
+  method public BBjChildWindow getCanvas()
+    methodret #Canvas!
+  methodend
+  rem /**
+  rem  * Set the app's drawer child window
+  rem *
+  rem * @param drawer! the drawer instance
+  rem */
+  method public void setDrawer(BBjChildWindow drawer!)
+    #Drawer! = drawer!
+    #Drawer!.setAttribute("data-drawer", #UUID!)
+    #Drawer!.setAttribute("slot", "drawer")
+    script! = "" +
+:    "(() => {" +
+:    " const layout = document.querySelector('[data-layout=""" + #getUUID() + """]');" +
+:    " const drawer = document.querySelector('[data-drawer=""" + #getUUID() + """]');" +
+:    " layout.appendChild(drawer);" +
+:    "})();"
+    #getHTMLView().executeAsyncScript(script!)
+  methodend
+  rem /**
+  rem * Set the app's header
+  rem *
+  rem * @param header! the header instance
+  rem */
+  method public void setHeader(BBjChildWindow header!)
+    #Header! = header!
+    #Header!.setAttribute("data-header", #UUID!)
+    #Header!.setAttribute("slot", "header")
+    script! = "" +
+:    "(() => {" +
+:    " const layout = document.querySelector('[data-layout=""" + #getUUID() + """]');" +
+:    " const header = document.querySelector('[data-header=""" + #getUUID() + """]');" +
+:    " layout.appendChild(header);" +
+:    "})();"
+    #getHTMLView().executeAsyncScript(script!)
+  methodend
+  rem /**
+  rem * Set the apps content
+  rem *
+  rem * @param content! the content instance
+  rem */
+  method public void setContent(BBjChildWindow content!)
+    #Content! = content!
+    #Content!.setAttribute("data-content", #UUID!)
+    script! = "" +
+:    "(() => {" +
+:    " const layout = document.querySelector('[data-layout=""" + #getUUID() + """]');" +
+:    " const content = document.querySelector('[data-content=""" + #getUUID() + """]');" +
+:    " layout.appendChild(content);" +
+:    "})();"
+    #getHTMLView().executeAsyncScript(script!)
+  methodend
+  rem /**
+  rem  * Set the apps footer
+  rem *
+  rem * @param footer! the footer instance
+  rem */
+  method public void setFooter(BBjChildWindow footer!)
+    #Footer! = footer!
+    #Footer!.setAttribute("data-footer", #UUID!)
+    #Footer!.setAttribute("slot", "footer")
+    script! = "" +
+:    "(() => {" +
+:    " const layout = document.querySelector('[data-layout=""" + #getUUID() + """]');" +
+:    " const footer = document.querySelector('[data-footer=""" + #getUUID() + """]');" +
+:    " layout.appendChild(footer);" +
+:    "})();"
+    #getHTMLView().executeAsyncScript(script!)
+  methodend
+  rem /**
+  rem  * Open the app's drawer
+  rem  */
+  method public void openDrawer()
+    #setAttribute("drawer-opened", "true")
+  methodend
+  rem /**
+  rem  * Close the app's drawer
+  rem  */
+  method public void closeDrawer()
+    #setAttribute("drawer-opened", "false")
+  methodend
+  rem /**
+  rem  * Toggle the app's drawer
+  rem  */
+  method public void toggleDrawer()
+    script! = "" +
+:    "(() => {" +
+:    " const layout = document.querySelector('[data-layout=""" + #getUUID() + """]');" +
+:    " layout.drawerOpened = typeof layout.drawerOpened === 'undefined' ? false : !layout.drawerOpened;" +
+:    "})();"
+    #getHTMLView().executeAsyncScript(script!)
+  methodend
+  rem /**
+  rem  * Check if the drawer is opened
+  rem  *
+  rem  * @returns true if the drawer is opened, false otherwise
+  rem  */
+  method public BBjNumber isDrawerOpened()
+    script! = "" +
+:    "(() => {" +
+:    " const layout = document.querySelector('[data-layout=""" + #getUUID() + """]');" +
+:    " return typeof layout.drawerOpened === 'undefined' ? true: layout.drawerOpened" +
+:    "})()"
+    methodret num(#getHTMLView().executeScript(script!))
+  methodend
+  rem /**
+  rem  * Set the drawer position
+  rem  *
+  rem  * @param placement! the position of the drawer
+  rem  *
+  rem  * @see BBjAppLayout.DRAWER_PLACEMENT_LEFT
+  rem  * @see BBjAppLayout.DRAWER_PLACEMENT_RIGHT
+  rem  * @see BBjAppLayout.DRAWER_PLACEMENT_HIDDEN
+  rem  */
+  method public void setDrawerPlacement(BBjNumber placement!)
+    switch placement!
+      case BBjAppLayout.DRAWER_PLACEMENT_LEFT
+        #setAttribute("drawer-placement", "left")
+        break
+      case BBjAppLayout.DRAWER_PLACEMENT_RIGHT
+        #setAttribute("drawer-placement", "right")
+        break
+      case BBjAppLayout.DRAWER_PLACEMENT_HIDDEN
+        #setAttribute("drawer-placement", "hidden")
+        break
+      case default
+        break
+    swend
+  methodend
+  rem /**
+  rem  * Get the drawer placement
+  rem  *
+  rem  * @return The drawer placement
+  rem  *
+  rem  * @see BBjAppLayout.DRAWER_PLACEMENT_LEFT
+  rem  * @see BBjAppLayout.DRAWER_PLACEMENT_RIGHT
+  rem  * @see BBjAppLayout.DRAWER_PLACEMENT_HIDDEN
+  rem  */
+  method public BBjNumber getDrawerPlacement()
+    placement! = #getAttribute("drawer-placement")
+    switch placement!
+      case "left"
+        methodret BBjAppLayout.DRAWER_PLACEMENT_LEFT
+        break
+      case "right"
+        methodret BBjAppLayout.DRAWER_PLACEMENT_RIGHT
+        break
+      case "hidden"
+        methodret BBjAppLayout.DRAWER_PLACEMENT_HIDDEN
+        break
+      case default
+        methodret BBjAppLayout.DRAWER_PLACEMENT_LEFT
+        break
+  methodend
+  rem /**
+  rem  * Set the drawer width
+  rem  *
+  rem  * @param width! the width of the drawer
+  rem  */
+  method public void setDrawerWidth(BBjString width!)
+    #setAttribute("drawer-width", width!)
+  methodend
+  rem /**
+  rem  * Set the drawer width
+  rem  *
+  rem  * If the drawer width set in CSS using the `--bbj-app-layout-drawer-width` custom property
+  rem  * then this property will be ignored.
+  rem  *
+  rem  * @param width! the width of the drawer
+  rem  */
+  method public void setDrawerWidth(BBjNumber width!)
+    #setDrawerWidth(str(width!) + "px")
+  methodend
+  rem /**
+  rem  * get the drawer width
+  rem  *
+  rem  * @return The drawer width
+  rem  */
+  method public BBjString getDrawerWidth()
+    ret! = #getAttribute("drawer-width")
+    methodret iff(ret! = "null", "16em" , str(ret!))
+  methodend
+  rem /**
+  rem  * When true, then the drawer will pop over
+  rem  * the header , footer and the content area.
+  rem  *
+  rem  * @param value! true to popover the drawer.
+  rem  */
+  method public void setDrawerPopover(BBjNumber value!)
+    #setAttribute("drawer-popover", iff(value! = 0, "false", "true"))
+  methodend
+  rem /**
+  rem  * Check if the drawer is popover
+  rem  *
+  rem  * @return true if the drawer is popover.
+  rem  */
+  method public BBjNumber isDrawerPopover()
+    ret! = #getAttribute("drawer-popover")
+    methodret iff(ret! = "null", 0, iff(ret! = "true", 1, 0))
+  methodend
+  rem /**
+  rem  * When true and the `drawerPopover` is enabled then the drawer
+  rem  * will have an overlay behind it when it is opened.
+  rem  *
+  rem  * @param value! true to enable the overlay.
+  rem  */
+  method public void setDrawerOverlay(BBjNumber value!)
+    #setAttribute("drawer-overlay", iff(value! = 0, "false", "true"))
+  methodend
+  rem /**
+  rem  * Check if the drawer has an overlay
+  rem  *
+  rem  * @return true if the drawer has an overlay.
+  rem  */
+  method public BBjNumber isDrawerOverlay()
+    ret! = #getAttribute("drawer-overlay")
+    methodret iff(ret! = "null", 1, iff(ret! = "true", 1, 0))
+  methodend
+  rem /**
+  rem  * A media query to control when the drawer will be switched to
+  rem  * popover mode. Useful for small screens.
+  rem  *
+  rem  * By default the drawer popover mode will be enabled
+  rem  * when the screen size is `800px` or less.
+  rem  */
+  method public void setDrawerBreakpoint(BBjString mediaQuery!)
+    #setAttribute("drawer-breakpoint", mediaQuery!)
+  methodend
+  rem /**
+  rem  * Get the drawer breakpoint's media query
+  rem  *
+  rem  * @return The drawer media query
+  rem  */
+  method public BBjString getDrawerBreakpoint()
+    ret! = #getAttribute("drawer-breakpoint")
+    methodret iff(ret! = "null", "(max-width: 800px)", str(ret!))
+  methodend
+  rem /**
+  rem  * Set the header shadow type.
+  rem  *
+  rem  * When `scroll` then the header will have a shadow after revealing.
+  rem  * when `always` the shadow will always be visible, hidden otherwise.
+  rem  *
+  rem  * @param type! the shadow type
+  rem  *
+  rem  * @see BBjAppLayout.SHADOW_SCROLL
+  rem  * @see BBjAppLayout.SHADOW_ALWAYS
+  rem  * @see BBjAppLayout.SHADOW_HIDDEN
+  rem  */
+  method public void setHeaderShadow(BBjNumber shadowType!)
+    switch shadowType!
+      case BBjAppLayout.SHADOW_ALWAYS
+        #setAttribute("header-shadow", "always")
+        break
+      case BBjAppLayout.SHADOW_SCROLL
+        #setAttribute("header-shadow", "scroll")
+        break
+      case default
+        #setAttribute("header-shadow", "none")
+        break
+    swend
+  methodend
+  rem /**
+  rem  * Get the header shadow type.
+  rem  *
+  rem  * @return The shadow type
+  rem  *
+  rem  * @see BBjAppLayout.SHADOW_SCROLL
+  rem  * @see BBjAppLayout.SHADOW_ALWAYS
+  rem  * @see BBjAppLayout.SHADOW_HIDDEN
+  rem  */
+  method public BBjNumber getHeaderShadow()
+    shadow! = #getAttribute("header-shadow")
+    switch shadow!
+      case "none"
+        methodret BBjAppLayout.SHADOW_HIDDEN
+        break
+      case "always"
+        methodret BBjAppLayout.SHADOW_ALWAYS
+        break
+      case "scroll"
+      case default
+        methodret BBjAppLayout.SHADOW_SCROLL
+        break
+    swend
+  methodend
+  rem /**
+  rem  * Set the footer shadow type.
+  rem  *
+  rem  * When `scroll` then the footer will have a shadow after revealing.
+  rem  * when `always` the shadow will always be visible, hidden otherwise.
+  rem  *
+  rem  * @param type! the shadow type
+  rem  *
+  rem  * @see BBjAppLayout.SHADOW_SCROLL
+  rem  * @see BBjAppLayout.SHADOW_ALWAYS
+  rem  * @see BBjAppLayout.SHADOW_HIDDEN
+  rem  */
+  method public void setFooterShadow(BBjNumber shadowType!)
+    switch shadowType!
+      case BBjAppLayout.SHADOW_ALWAYS
+        #setAttribute("footer-shadow", "always")
+        break
+      case BBjAppLayout.SHADOW_SCROLL
+        #setAttribute("footer-shadow", "scroll")
+        break
+      case BBjAppLayout.SHADOW_HIDDEN
+      case default
+        #setAttribute("footer-shadow", "none")
+        break
+    swend
+  methodend
+  rem /**
+  rem  * Get the footer shadow type.
+  rem  *
+  rem  * @return The shadow type
+  rem  *
+  rem  * @see BBjAppLayout.SHADOW_SCROLL
+  rem  * @see BBjAppLayout.SHADOW_ALWAYS
+  rem  * @see BBjAppLayout.SHADOW_HIDDEN
+  rem  */
+  method public BBjNumber getFooterShadow()
+    shadow! = #getAttribute("footer-shadow")
+    switch shadow!
+      case "always"
+        methodret BBjAppLayout.SHADOW_ALWAYS
+        break
+      case "scroll"
+        methodret BBjAppLayout.SHADOW_SCROLL
+        break
+      case "none"
+      case default
+        methodret BBjAppLayout.SHADOW_HIDDEN
+        break
+    swend
+  methodend
+  rem /**
+  rem  * Set the `footer-fixed` attribute.
+  rem  *
+  rem  * When true, the footer will be fixed at the top and won't move when the user scrolls.
+  rem  *
+  rem  * @param BBjNumber True to enable, false to disable.
+  rem  */
+  method public void setFooterFixed(BBjNumber value!)
+    #setAttribute("footer-fixed", iff(value! = 0, "false", "true"))
+  methodend
+  rem /**
+  rem  * Get the footer-fixed attribute.
+  rem  *
+  rem  * @returns BBjNumber True if enabled, false if disabled.
+  rem  */
+  method public BBjNumber getFooterFixed()
+    attr! = #getAttribute("footer-fixed")
+    methodret num(iff(attr! = "null", 1, iff(attr! = "false", 0, 1)))
+  methodend
+  rem /**
+  rem  * Set the `footer-offscreen` attribute.
+  rem  *
+  rem  * When true, the footer position will be shifted to fit beside the opened drawer.
+  rem  *
+  rem  * @param BBjNumber True to enable, false to disable.
+  rem  */
+  method public void setFooterOffscreen(BBjNumber value!)
+    #setAttribute("footer-offscreen", iff(value! = 0, "false", "true"))
+  methodend
+  rem /**
+  rem  * Get the footer-offscreen attribute.
+  rem  *
+  rem  * @returns BBjNumber True if enabled, false if disabled.
+  rem  */
+  method public BBjNumber getFooterOffscreen()
+    attr! = #getAttribute("footer-offscreen")
+    methodret num(iff(attr! = "null", 1, iff(attr! = "false", 0, 1)))
+  methodend
+  rem /**
+  rem  * Set the `footer-reveal` attribute.
+  rem  *
+  rem  * When true, the footer will be revealed when the user scrolls down.
+  rem  *
+  rem  * @param BBjNumber True to enable, false to disable.
+  rem  */
+  method public void setFooterReveal(BBjNumber value!)
+    #setAttribute("footer-reveal", iff(value! = 0, "false", "true"))
+  methodend
+  rem /**
+  rem  * Get the footer-reveal attribute.
+  rem  *
+  rem  * @returns BBjNumber True if enabled, false if disabled.
+  rem  */
+  method public BBjNumber getFooterReveal()
+    attr! = #getAttribute("footer-reveal")
+    methodret num(iff(attr! = "null", 0, iff(attr! = "false", 0, 1)))
+  methodend
+  rem /**
+  rem  * Set the `header-fixed` attribute.
+  rem  *
+  rem  * When true, the header will be fixed at the top and won't move when the user scrolls.
+  rem  *
+  rem  * @param BBjNumber True to enable, false to disable.
+  rem  */
+  method public void setHeaderFixed(BBjNumber value!)
+    #setAttribute("header-fixed", iff(value! = 0, "false", "true"))
+  methodend
+  rem /**
+  rem  * Get the header-fixed attribute.
+  rem  *
+  rem  * @returns BBjNumber True if enabled, false if disabled.
+  rem  */
+  method public BBjNumber getHeaderFixed()
+    attr! = #getAttribute("header-fixed")
+    methodret num(iff(attr! = "null", 1, iff(attr! = "false", 0, 1)))
+  methodend
+  rem /**
+  rem  * Set the `header-offscreen` attribute.
+  rem  *
+  rem  * When true, the header position will be shifted to fit beside the opened drawer.
+  rem  *
+  rem  * @param BBjNumber True to enable, false to disable.
+  rem  */
+  method public void setHeaderOffscreen(BBjNumber value!)
+    #setAttribute("header-offscreen", iff(value! = 0, "false", "true"))
+  methodend
+  rem /**
+  rem  * Get the header-offscreen attribute.
+  rem  *
+  rem  * @returns BBjNumber True if enabled, false if disabled.
+  rem  */
+  method public BBjNumber getHeaderOffscreen()
+    attr! = #getAttribute("header-offscreen")
+    methodret num(iff(attr! = "null", 1, iff(attr! = "false", 0, 1)))
+  methodend
+  rem /**
+  rem  * Set the `header-reveal` attribute.
+  rem  *
+  rem  * When true, the header will be revealed when the user scrolls up.
+  rem  *
+  rem  * @param BBjNumber True to enable, false to disable.
+  rem  */
+  method public void setHeaderReveal(BBjNumber value!)
+    #setAttribute("header-reveal", iff(value! = 0, "false", "true"))
+  methodend
+  rem /**
+  rem  * Get the header-reveal attribute.
+  rem  *
+  rem  * @returns BBjNumber True if enabled, false if disabled.
+  rem  */
+  method public BBjNumber getHeaderReveal()
+    attr! = #getAttribute("header-reveal")
+    methodret num(iff(attr! = "null", 0, iff(attr! = "false", 0, 1)))
+  methodend
+  rem /**
+  rem  * Set a widget attribute
+  rem  *
+  rem  * @param key! The attribute's name
+  rem  * @param value! The attribute's value
+  rem  */
+  method public void setAttribute(BBjString key!, BBjString value!)
+    script! = "" +
+:    "(() => {" +
+:    " const layout = document.querySelector('[data-layout=""" + #getUUID() + """]');" +
+:    " layout.setAttribute('" + str(key!) + "','" + str(value!) + "');" +
+:    "})()"
+    #getHTMLView().executeAsyncScript(script!)
+  methodend
+  rem /**
+  rem  * Get a widget attribute
+  rem  *
+  rem  * @param key! The attribute's name
+  rem  */
+  method public BBjString getAttribute(BBjString key!)
+    script! = "" +
+:    "(() => {" +
+:    " const layout = document.querySelector('[data-layout=""" + #getUUID() + """]');" +
+:    " return layout.getAttribute('" + str(key!) + "');" +
+:    "})()"
+    methodret str(#getHTMLView().executeScript(script!))
+  methodend
+  rem /**
+  rem  * Set an app layout event listener
+  rem  *
+  rem  * @param event! The event
+  rem  * @param callback! The event callback
+  rem  */
+  method public void setCallback(BBjNumber event!, String callback!)
+    BBjAPI().setCustomEventCallback(str(#this!) + str(event!), callback!)
+  methodend
+  rem /**
+  rem  * Set an app layout event listener
+  rem  *
+  rem  * @param event! The event
+  rem  * @param callback! A class instance
+  rem  * @param callback! The event method
+  rem  */
+  method public void setCallback(BBjNumber event!, CustomObject instance!, String method!)
+    BBjAPI().setCustomEventCallback(str(#this!) + str(event!), instance!, method!)
+  methodend
+  rem /**
+  rem  * Clear an event callback
+  rem  *
+  rem  * @param event! The event
+  rem  */
+  method public void clearCallback(BBjNumber event!)
+    BBjAPI().clearCustomEventCallback(str(#this!) + str(event!))
+  methodend
+  rem /**
+  rem  * Handle the client events.
+  rem  *
+  rem  * <b>IMPORTANT</b> This method is not meant to be part of the public API of the control
+  rem  * @param ev! The Javascript event
+  rem  *
+  rem  * @ignore
+  rem  */
+  method public void handleJavascriptEvents(BBjNativeJavaScriptEvent ev!)
+    map! = ev!.getEventMap()
+    type$ = str(map!.get("type"))
+    detail$ = str(map!.get("detail"))
+    parser! = new JsonParser()
+    json!  = parser!.parse(detail$).getAsJsonObject()
+    drawerOpened! = json!.get("drawerOpened").getAsBoolean()
+    drawerPopover! = json!.get("drawerPopover").getAsBoolean()
+    payload! = new BBjAppLayoutEvent(#this!, drawerOpened!, drawerPopover!)
+    switch type$
+      case "bbj-drawer-opened"
+        BBjAPI().postPriorityCustomEvent(str(#this!) + str(BBjAppLayout.ON_DRAWER_OPENED), payload!)
+        break
+      case "bbj-drawer-closed"
+        BBjAPI().postPriorityCustomEvent(str(#this!) + str(BBjAppLayout.ON_DRAWER_CLOSED), payload!)
+        break
+      case "bbj-drawer-toggled"
+        BBjAPI().postPriorityCustomEvent(str(#this!) + str(BBjAppLayout.ON_DRAWER_TOGGLED), payload!)
+        break
+      case default
+        break
+    swend
+  methodend
+
+classend

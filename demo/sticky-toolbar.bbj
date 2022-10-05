@@ -1,0 +1,134 @@
+style! = "
+: body,html {overflow: hidden}
+:
+: :root {   
+:   --bbj-app-layout-header-collapse-height: 45px;
+: }
+:
+: .bbj-toolbar {
+:    display: flex;
+:    align-items: center;
+:    gap: var(--bbj-space-m);
+:    padding: 0 var(--bbj-space-m);
+: }
+:
+: .bbj-logo {
+:    display: flex;
+:    align-items: center;
+:    justify-content: center;
+:    padding: var(--bbj-space-m) 0;
+:    margin-bottom: var(--bbj-space-m);
+:    border-bottom: thin solid var(--bbj-color-default)
+: }
+:
+: .bbj-logo img {
+:    max-width: 100px;
+: }
+: 
+: .bbj-content {
+:   max-width: 600px;
+:   margin: 0 auto; 
+: }
+:
+: .bbj-card {
+:    padding: var(--bbj-space-m);
+:    margin: var(--bbj-space-m) 0;
+:    border: thin solid var(--bbj-color-default);
+:    border-radius: var(--bbj-border-radius-m);
+:    background-color: var(--bbj-surface-3);
+: }
+:"
+
+use ::BBjAppLayout/BBjAppLayout.bbj::BBjAppLayout
+
+web! = BBjAPI().getWebManager()
+rem The app should include a viewport meta tag which contains `viewport-fit=cover`, like the following.
+rem This causes the viewport to be scaled to fill the device display.
+web!.setMeta("viewport", "width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no")
+web!.injectStyle(style!, 0)
+
+sysgui! =  BBjAPI().openSysGui("X0")
+imageManager! = sysgui!.getImageManager()
+
+wnd! = sysgui!.addWindow("BBjAppLayout", $01001000$)
+wnd!.setCallback(BBjAPI.ON_CLOSE,"eoj")
+
+app! = new BBjAppLayout(wnd!)
+app!.setHeaderReveal(1)
+
+rem Header
+rem ==================
+header! = app!.getHeader()
+firstToolbar! = header!.addChildWindow("", $00108800$, sysgui!.getAvailableContext())
+firstToolbar!.addStyle("bbj-toolbar")
+firstToolbar!.addStaticText("<html><bbj-icon-button name='menu-2' data-drawer-toggle></bbj-icon-button></html>")
+firstToolbar!.addStaticText("<html><h3>DWC Application</h3></html>")
+
+secondToolbar! = header!.addChildWindow("", $00108800$, sysgui!.getAvailableContext())
+empty! = secondToolbar!.addChildWindow("", $00000810$, sysgui!.getAvailableContext())
+secondToolbarMenu! = secondToolbar!.addTabCtrl()
+secondToolbarMenu!.setAttribute("nobody","true")
+secondToolbarMenu!.setAttribute("borderless","true")
+secondToolbarMenu!.addTab("<bbj-icon name='report-money'></bbj-icon>  Sales"        , empty!)
+secondToolbarMenu!.addTab("<bbj-icon name='building'></bbj-icon>      Enterprise"   , empty!)
+secondToolbarMenu!.addTab("<bbj-icon name='credit-card'></bbj-icon>   Payments"     , empty!)
+secondToolbarMenu!.addTab("<bbj-icon name='history'></bbj-icon>       History"      , empty!)
+
+rem Drawer
+rem ==================
+drawer! = app!.getDrawer()
+drawer!.addStyle("bbj-drawer")
+
+logo! = drawer!.addImageCtrl(imageManager!.loadImageFromFile("./assets/logo.png"))
+logo!.addStyle("bbj-logo")
+
+empty! = drawer!.addChildWindow("", $00000810$, sysgui!.getAvailableContext())
+drawerMenu! = drawer!.addTabCtrl()
+drawerMenu!.setCallback(drawerMenu!.ON_TAB_SELECT,"onPageChanged")
+drawerMenu!.setAttribute("nobody","true")
+drawerMenu!.setAttribute("borderless","true")
+drawerMenu!.setAttribute("placement","left")
+drawerMenu!.addTab("<bbj-icon name='dashboard'></bbj-icon>      Dashboard"    , empty!)
+drawerMenu!.addTab("<bbj-icon name='shopping-cart'></bbj-icon>  Orders"       , empty!)
+drawerMenu!.addTab("<bbj-icon name='users'></bbj-icon>          Customers"    , empty!)
+drawerMenu!.addTab("<bbj-icon name='box'></bbj-icon>            Products"     , empty!)
+drawerMenu!.addTab("<bbj-icon name='files'></bbj-icon>          Documents"    , empty!)
+drawerMenu!.addTab("<bbj-icon name='checklist'></bbj-icon>      Tasks"        , empty!)
+drawerMenu!.addTab("<bbj-icon name='chart-dots-2'></bbj-icon>   Analytics"    , empty!)
+
+rem Content
+rem ==================
+content! = app!.getContent()
+content!.addStyle("bbj-content")
+pageHeader! = content!.addStaticText("<html><h1>Application Title</h1></html>")
+
+lorem! = "
+:Lorem Ipsum is simply dummy text of the printing and typesetting 
+:industry. Lorem Ipsum has been the industry's standard dummy 
+:text ever since the 1500s when an unknown printer took a galley 
+:of type and scrambled it to make a type specimen book. It has 
+:survived not only five centuries, but also the leap into electronic 
+:typesetting, remaining essentially unchanged. It was popularised 
+:in the 1960s with the release of Letraset sheets containing Lorem 
+:Ipsum passages, and more recently with desktop publishing software
+: like Aldus PageMaker including versions of Lorem Ipsum.
+:"
+
+for i=1 to 10
+    card! = content!.addChildWindow("", $00108000$, sysgui!.getAvailableContext())
+    card!.addStyle("bbj-card")
+    cardTitle! = card!.addStaticText("<html><h2>What is Lorem Ipsum (" + str(i) +")?</h2></html>")
+    cardContent! = card!.addStaticText("<html><p>" + lorem! + "</p></html>")
+next 
+
+process_events
+
+onPageChanged:
+  event! = sysgui!.getLastEvent() 
+  title$ = event!.getTitle().replaceAll("<[^>]*>","").trim()
+
+  pageHeader!.setText("<html><h1>" + title$ + " Page</h1></html>")
+return
+
+eoj:
+release

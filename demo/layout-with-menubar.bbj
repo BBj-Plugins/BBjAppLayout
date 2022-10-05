@@ -1,0 +1,160 @@
+style! = "
+: body,html {overflow: hidden}
+:
+: .bbj-toolbar {
+:    display: flex;
+:    align-items: center;
+:    gap: var(--bbj-space-m);
+:    padding: 0 var(--bbj-space-m);
+: }
+:
+: bbj-menubar {
+:  border-bottom: thin solid var(--bbj-color-default);
+:  padding: 0 calc(var(--bbj-space-s) + env(safe-area-inset-left, 0) + env(safe-area-inset-right, 0));
+: }
+:
+: .bbj-logo {
+:    display: flex;
+:    align-items: center;
+:    justify-content: center;
+:    padding: var(--bbj-space-m) 0;
+:    margin-bottom: var(--bbj-space-m);
+:    border-bottom: thin solid var(--bbj-color-default)
+: }
+:
+: .bbj-logo img {
+:    max-width: 100px;
+: }
+:"
+
+use ::BBjAppLayout/BBjAppLayout.bbj::BBjAppLayout
+
+web! = BBjAPI().getWebManager()
+rem The app should include a viewport meta tag which contains `viewport-fit=cover`, like the following.
+rem This causes the viewport to be scaled to fill the device display.
+web!.setMeta("viewport", "width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no")
+web!.injectStyle(style!, 0)
+
+sysgui! =  BBjAPI().openSysGui("X0")
+imageManager! = sysgui!.getImageManager()
+
+wnd! = sysgui!.addWindow("BBjAppLayout", $01001000$)
+wnd!.setCallback(BBjAPI.ON_CLOSE,"eoj")
+
+rem Create a menubar
+os$ = info(0,0)
+os$ = BBjAPI().getThinClient(err=*next).getClientOSName()
+mac = pos("Mac OS X"=os$)
+if info(3,6)="5" then mac = pos("Macintosh"=info(3,8))
+mod$ = iff(mac,$8000$,$2000$)
+def fnmod$(key$)="$"+hta(ior(mod$,key$))+"$"
+menu$=
+:"&File,99,,"+$0a$+
+:" &New...,100,"+fnmod$($004e$)+","+$0a$+
+:" &Open...,101,"+fnmod$($004f$)+","+$0a$+
+:" &Close,102,,"+$0a$+
+:" separator,65535,,S"+$0a$+
+:" &Save,103,"+fnmod$($0053$)+","+$0a$+
+:" Save &As...,104,,"+$0a$+
+:" separator,65535,,S"+$0a$+
+:" Print Set&up...,105,,"+$0a$+
+:" Print Pre&view,106,,"+$0a$+
+:" &Print,107,"+fnmod$($0050$)+","+$0a$+
+:" Begin MRU,1,,S"+$0a$+
+:" &1 C:\Scooby\BASIS\gb\databound.gbf,111,,"+$0a$+
+:" &2 C:\Scooby\BASIS\gb\_prof.gbf,112,,"+$0a$+
+:" &3 C:\Scooby\BASIS\gb\tab.gbf,113,,"+$0a$+
+:" &4 C:\Scooby\BASIS\gb\Grid.gbf,114,,"+$0a$+
+:" End MRU,1,,S"+$0a$+
+:" E&xit,108,,"+$0a$+
+:"&Edit,199,,"+$0a$+
+:" Cu&t,32027,"+fnmod$($0058$)+","+$0a$+
+:" &Copy,32028,"+fnmod$($0043$)+","+$0a$+
+:" &Paste,32029,"+fnmod$($0056$)+","+$0a$+
+:" separator,65535,,S"+$0a$+
+:" Select &All,200,"+fnmod$($0041$)+","+$0a$+
+:" separator,65535,,S"+$0a$+
+:" &Find,201,"+fnmod$($0046$)+","+$0a$+
+:"&Program,299,,"+$0a$+
+:" Select &Form,300,,"+$0a$+
+:"  101 Form,700,,U"+$0a$+
+:" Select &Popup,301,,"+$0a$+
+:" &Initialization,303,,"+$0a$+
+:" End of &Job,304,,"+$0a$+
+:" &Subroutines/Functions,305,,"+$0a$+
+:"  &New Subroutine/Function,800,,"+$0a$+
+:" &Delete Code,306,,"+$0a$+
+:" Check for &Errors,307,,"+$0a$+
+:" &Build Program,308,,"+$0a$+
+:" &Run Program,309,,"+$0a$+
+:" separator,65535,,S"+$0a$+
+:" &Get External Code...,310,,"+$0a$+
+:" &View Program,311,,"+$0a$+
+:" &Check Resource,312,,"+$0a$+
+:" &Make Grid Code,313,,"+$0a$+
+:" separator,65535,,S"+$0a$+
+:" Show &All Events,314,,C"+$0a$+
+:" Program &Options,315,,"+$0a$+
+:"&Tools,399,,"+$0a$+
+:" &ResBuilder,401,,"+$0a$+
+:" &DDBuilder,402,,"+$0a$+
+:" &Interpreter,403,,"+$0a$+
+:"&Window,499,,"+$0a$+
+:" &0 Edit Code,500,,C"+$0a$+
+:" &1 View Code,501,,U"+$0a$+
+:"&Help,599,,"+$0a$+
+:" &Help Topics,600,$014b$,"+$0a$+
+:" separator,65535,,S"+$0a$+
+:" &About GUIBuilder,604,,"+$0a$+
+:$0a$
+print (sysgui!.getChannel())'setmenu',menu$
+
+app! = new BBjAppLayout(wnd!)
+
+rem Header
+rem ==================
+header! = app!.getHeader()
+toolbar! = header!.addChildWindow("", $00108800$, sysgui!.getAvailableContext())
+toolbar!.addStyle("bbj-toolbar")
+toolbar!.addStaticText("<html><bbj-icon-button name='menu-2' data-drawer-toggle></bbj-icon-button></html>")
+toolbar!.addStaticText("<html><h3>DWC Application</h3></html>")
+
+rem Drawer
+rem ==================
+drawer! = app!.getDrawer()
+drawer!.addStyle("bbj-drawer")
+
+logo! = drawer!.addImageCtrl(imageManager!.loadImageFromFile("./assets/logo.png"))
+logo!.addStyle("bbj-logo")
+
+empty! = drawer!.addChildWindow("", $00000810$, sysgui!.getAvailableContext())
+drawerMenu! = drawer!.addTabCtrl()
+drawerMenu!.setCallback(drawerMenu!.ON_TAB_SELECT,"onPageChanged")
+drawerMenu!.setAttribute("nobody","true")
+drawerMenu!.setAttribute("borderless","true")
+drawerMenu!.setAttribute("placement","left")
+drawerMenu!.addTab("<bbj-icon name='dashboard'></bbj-icon>      Dashboard"    , empty!)
+drawerMenu!.addTab("<bbj-icon name='shopping-cart'></bbj-icon>  Orders"       , empty!)
+drawerMenu!.addTab("<bbj-icon name='users'></bbj-icon>          Customers"    , empty!)
+drawerMenu!.addTab("<bbj-icon name='box'></bbj-icon>            Products"     , empty!)
+drawerMenu!.addTab("<bbj-icon name='files'></bbj-icon>          Documents"    , empty!)
+drawerMenu!.addTab("<bbj-icon name='checklist'></bbj-icon>      Tasks"        , empty!)
+drawerMenu!.addTab("<bbj-icon name='chart-dots-2'></bbj-icon>   Analytics"    , empty!)
+
+rem Content
+rem ==================
+content! = app!.getContent()
+content!.addStaticText("<html><h1>Application Title</h1></html>")
+pageContent! = content!.addStaticText("<html><p>Content goes here</p></html>")
+
+process_events
+
+onPageChanged:
+  event! = sysgui!.getLastEvent() 
+  title$ = event!.getTitle().replaceAll("<[^>]*>","").trim()
+
+  pageContent!.setText("<html><p>" + title$ + " content goes here</p></html>")
+return
+
+eoj:
+release

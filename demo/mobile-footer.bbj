@@ -1,0 +1,89 @@
+style! = "
+: body,html {overflow: hidden}
+:
+: .bbj-toolbar {
+:    display: flex;
+:    align-items: center;
+:    gap: var(--bbj-space-m);
+:    padding: 0 var(--bbj-space-m);
+: }
+:
+: .bbj-logo {
+:    display: flex;
+:    align-items: center;
+:    justify-content: center;
+: }
+:
+: .bbj-logo img {
+:    height: 24px;
+: }
+:
+: @media (max-width: 600px) {  
+:  bbj-tab::part(title) { 
+:     display: none;
+:   }    
+: }
+:"
+
+use ::BBjAppLayout/BBjAppLayout.bbj::BBjAppLayout
+
+web! = BBjAPI().getWebManager()
+rem The app should include a viewport meta tag which contains `viewport-fit=cover`, like the following.
+rem This causes the viewport to be scaled to fill the device display.
+web!.setMeta("viewport", "width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no")
+web!.injectStyle(style!, 0)
+
+sysgui! =  BBjAPI().openSysGui("X0")
+imageManager! = sysgui!.getImageManager()
+
+wnd! = sysgui!.addWindow("BBjAppLayout", $01001000$)
+wnd!.setCallback(BBjAPI.ON_CLOSE,"eoj")
+
+app! = new BBjAppLayout(wnd!)
+app!.setHeaderOffscreen(0)
+app!.setDrawerPlacement(BBjAppLayout.DRAWER_PLACEMENT_HIDDEN)
+
+rem Header
+rem ==================
+header! = app!.getHeader()
+toolbar! = header!.addChildWindow("", $00108800$, sysgui!.getAvailableContext())
+toolbar!.addStyle("bbj-toolbar")
+logo! = toolbar!.addImageCtrl(imageManager!.loadImageFromFile("./assets/logo.png"))
+logo!.addStyle("bbj-logo")
+toolbar!.addStaticText("<html><h3>DWC Application</h3></html>")
+
+rem Footer
+rem ==================
+footer! = app!.getFooter()
+footer!.addStyle("bbj-footer")
+
+empty! = footer!.addChildWindow("", $00000810$, sysgui!.getAvailableContext())
+footerMenu! = footer!.addTabCtrl()
+footerMenu!.setCallback(footerMenu!.ON_TAB_SELECT, "onPageChanged")
+footerMenu!.setAttribute("nobody","true")
+footerMenu!.setAttribute("borderless","true")
+footerMenu!.setAttribute("placement","bottom")
+footerMenu!.setAttribute("alignment","stretch")
+footerMenu!.addTab("<bbj-icon expanse='s' name='dashboard'></bbj-icon>      <span part='title'>Dashboard</span>"    , empty!)
+footerMenu!.addTab("<bbj-icon expanse='s' name='shopping-cart'></bbj-icon>  <span part='title'>Orders</span>"       , empty!)
+footerMenu!.addTab("<bbj-icon expanse='s' name='users'></bbj-icon>          <span part='title'>Customers</span>"    , empty!)
+footerMenu!.addTab("<bbj-icon expanse='s' name='box'></bbj-icon>            <span part='title'>Products</span>"     , empty!)
+footerMenu!.addTab("<bbj-icon expanse='s' name='files'></bbj-icon>          <span part='title'>Documents</span>"    , empty!)
+
+rem Content
+rem ==================
+content! = app!.getContent()
+content!.addStaticText("<html><h1>Application Title</h1></html>")
+pageContent! = content!.addStaticText("<html><p>Content goes here</p></html>")
+
+process_events
+
+onPageChanged:
+  event! = sysgui!.getLastEvent() 
+  title$ = event!.getTitle().replaceAll("<[^>]*>","").trim()
+
+  pageContent!.setText("<html><p>Content for " + title$ + " goes here</p></html>")
+return
+
+eoj:
+release
