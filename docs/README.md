@@ -798,6 +798,8 @@ style! = "
 :    align-items: center;
 :    gap: var(--bbj-space-m);
 :    padding: 0 var(--bbj-space-m);
+:    background-color: var(--bbj-color-primary);
+:    color: var(--bbj-color-on-primary-text);
 : }
 :
 : .bbj-logo {
@@ -812,9 +814,9 @@ style! = "
 :
 : .bbj-content {
 :   max-width: 600px;
-:   margin: 0 auto;
+:   margin: 0 auto; 
 : }
-:
+:    
 : .bbj-card {
 :    padding: var(--bbj-space-m);
 :    margin: var(--bbj-space-m) 0;
@@ -822,11 +824,11 @@ style! = "
 :    border-radius: var(--bbj-border-radius-m);
 :    background-color: var(--bbj-surface-3);
 : }
-:
-: @media (max-width: 600px) {
-:  bbj-tab::part(title) {
+:    
+: @media (max-width: 600px) {  
+:  bbj-tab::part(title) { 
 :     display: none;
-:   }
+:   }    
 : }
 :"
 
@@ -883,13 +885,13 @@ content!.addStyle("bbj-content")
 pageHeader! = content!.addStaticText("<html><h1>Application Title</h1></html>")
 
 lorem! = "
-:Lorem Ipsum is simply dummy text of the printing and typesetting
-:industry. Lorem Ipsum has been the industry's standard dummy
-:text ever since the 1500s when an unknown printer took a galley
-:of type and scrambled it to make a type specimen book. It has
-:survived not only five centuries, but also the leap into electronic
-:typesetting, remaining essentially unchanged. It was popularised
-:in the 1960s with the release of Letraset sheets containing Lorem
+:Lorem Ipsum is simply dummy text of the printing and typesetting 
+:industry. Lorem Ipsum has been the industry's standard dummy 
+:text ever since the 1500s when an unknown printer took a galley 
+:of type and scrambled it to make a type specimen book. It has 
+:survived not only five centuries, but also the leap into electronic 
+:typesetting, remaining essentially unchanged. It was popularised 
+:in the 1960s with the release of Letraset sheets containing Lorem 
 :Ipsum passages, and more recently with desktop publishing software
 : like Aldus PageMaker including versions of Lorem Ipsum.
 :"
@@ -899,16 +901,17 @@ for i=1 to 10
     card!.addStyle("bbj-card")
     cardTitle! = card!.addStaticText("<html><h2>What is Lorem Ipsum (" + str(i) +")?</h2></html>")
     cardContent! = card!.addStaticText("<html><p>" + lorem! + "</p></html>")
-next
+next 
 
 process_events
 
 onPageChanged:
-  event! = sysgui!.getLastEvent()
+  event! = sysgui!.getLastEvent() 
   title$ = event!.getTitle().replaceAll("<[^>]*>","").trim()
 
   pageHeader!.setText("<html><h1>" + title$ + " Page</h1></html>")
 return
+
 
 eoj:
 release
