@@ -73,18 +73,17 @@ rem ==================
 footer! = app!.getFooter()
 footer!.addStyle("bbj-footer")
 
-empty! = footer!.addChildWindow("", $00000810$, sysgui!.getAvailableContext())
 footerMenu! = footer!.addTabCtrl()
 footerMenu!.setCallback(footerMenu!.ON_TAB_SELECT, "onPageChanged")
 footerMenu!.setAttribute("nobody","true")
 footerMenu!.setAttribute("borderless","true")
 footerMenu!.setAttribute("placement","bottom")
 footerMenu!.setAttribute("alignment","stretch")
-footerMenu!.addTab("<bbj-icon expanse='s' name='dashboard'></bbj-icon>      <span part='title'>Dashboard</span>"    , empty!)
-footerMenu!.addTab("<bbj-icon expanse='s' name='shopping-cart'></bbj-icon>  <span part='title'>Orders</span>"       , empty!)
-footerMenu!.addTab("<bbj-icon expanse='s' name='users'></bbj-icon>          <span part='title'>Customers</span>"    , empty!)
-footerMenu!.addTab("<bbj-icon expanse='s' name='box'></bbj-icon>            <span part='title'>Products</span>"     , empty!)
-footerMenu!.addTab("<bbj-icon expanse='s' name='files'></bbj-icon>          <span part='title'>Documents</span>"    , empty!)
+footerMenu!.addTab("<bbj-icon expanse='s' name='dashboard'></bbj-icon>      <span part='title'>Dashboard</span>"    , -1)
+footerMenu!.addTab("<bbj-icon expanse='s' name='shopping-cart'></bbj-icon>  <span part='title'>Orders</span>"       , -1)
+footerMenu!.addTab("<bbj-icon expanse='s' name='users'></bbj-icon>          <span part='title'>Customers</span>"    , -1)
+footerMenu!.addTab("<bbj-icon expanse='s' name='box'></bbj-icon>            <span part='title'>Products</span>"     , -1)
+footerMenu!.addTab("<bbj-icon expanse='s' name='files'></bbj-icon>          <span part='title'>Documents</span>"    , -1)
 
 rem Content
 rem ==================

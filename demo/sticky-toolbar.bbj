@@ -65,14 +65,13 @@ firstToolbar!.addStaticText("<html><bbj-icon-button name='menu-2' data-drawer-to
 firstToolbar!.addStaticText("<html><h3>DWC Application</h3></html>")
 
 secondToolbar! = header!.addChildWindow("", $00108800$, sysgui!.getAvailableContext())
-empty! = secondToolbar!.addChildWindow("", $00000810$, sysgui!.getAvailableContext())
 secondToolbarMenu! = secondToolbar!.addTabCtrl()
 secondToolbarMenu!.setAttribute("nobody","true")
 secondToolbarMenu!.setAttribute("borderless","true")
-secondToolbarMenu!.addTab("<bbj-icon name='report-money'></bbj-icon>  Sales"        , empty!)
-secondToolbarMenu!.addTab("<bbj-icon name='building'></bbj-icon>      Enterprise"   , empty!)
-secondToolbarMenu!.addTab("<bbj-icon name='credit-card'></bbj-icon>   Payments"     , empty!)
-secondToolbarMenu!.addTab("<bbj-icon name='history'></bbj-icon>       History"      , empty!)
+secondToolbarMenu!.addTab("<bbj-icon name='report-money'></bbj-icon>  Sales"        , -1)
+secondToolbarMenu!.addTab("<bbj-icon name='building'></bbj-icon>      Enterprise"   , -1)
+secondToolbarMenu!.addTab("<bbj-icon name='credit-card'></bbj-icon>   Payments"     , -1)
+secondToolbarMenu!.addTab("<bbj-icon name='history'></bbj-icon>       History"      , -1)
 
 rem Drawer
 rem ==================
@@ -82,19 +81,18 @@ drawer!.addStyle("bbj-drawer")
 logo! = drawer!.addImageCtrl(imageManager!.loadImageFromFile("./assets/logo.png"))
 logo!.addStyle("bbj-logo")
 
-empty! = drawer!.addChildWindow("", $00000810$, sysgui!.getAvailableContext())
 drawerMenu! = drawer!.addTabCtrl()
 drawerMenu!.setCallback(drawerMenu!.ON_TAB_SELECT,"onPageChanged")
 drawerMenu!.setAttribute("nobody","true")
 drawerMenu!.setAttribute("borderless","true")
 drawerMenu!.setAttribute("placement","left")
-drawerMenu!.addTab("<bbj-icon name='dashboard'></bbj-icon>      Dashboard"    , empty!)
-drawerMenu!.addTab("<bbj-icon name='shopping-cart'></bbj-icon>  Orders"       , empty!)
-drawerMenu!.addTab("<bbj-icon name='users'></bbj-icon>          Customers"    , empty!)
-drawerMenu!.addTab("<bbj-icon name='box'></bbj-icon>            Products"     , empty!)
-drawerMenu!.addTab("<bbj-icon name='files'></bbj-icon>          Documents"    , empty!)
-drawerMenu!.addTab("<bbj-icon name='checklist'></bbj-icon>      Tasks"        , empty!)
-drawerMenu!.addTab("<bbj-icon name='chart-dots-2'></bbj-icon>   Analytics"    , empty!)
+drawerMenu!.addTab("<bbj-icon name='dashboard'></bbj-icon>      Dashboard"    , -1)
+drawerMenu!.addTab("<bbj-icon name='shopping-cart'></bbj-icon>  Orders"       , -1)
+drawerMenu!.addTab("<bbj-icon name='users'></bbj-icon>          Customers"    , -1)
+drawerMenu!.addTab("<bbj-icon name='box'></bbj-icon>            Products"     , -1)
+drawerMenu!.addTab("<bbj-icon name='files'></bbj-icon>          Documents"    , -1)
+drawerMenu!.addTab("<bbj-icon name='checklist'></bbj-icon>      Tasks"        , -1)
+drawerMenu!.addTab("<bbj-icon name='chart-dots-2'></bbj-icon>   Analytics"    , -1)
 
 rem Content
 rem ==================
