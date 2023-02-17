@@ -1,10 +1,6 @@
 style! = "
 : body,html {overflow: hidden}
 :
-: bbj-app-layout[swapped-drawer] {
-: --bbj-app-layout-drawer-width: 120px;
-: }
-:
 : .bbj-toolbar {
 :    display: flex;
 :    align-items: center;
@@ -32,8 +28,8 @@ style! = "
 :
 :  bbj-app-layout[swapped-drawer] bbj-tab::part(tab-title) {
 :    display: flex;
-:   flex-direction: column;
-:   align-items: center;
+:    flex-direction: column;
+:    align-items: center;
 :   --bbj-icon-size: 2.5rem;
 :  }
 :"
@@ -54,6 +50,8 @@ wnd!.setCallback(BBjAPI.ON_CLOSE,"eoj")
 
 app! = new BBjAppLayout(wnd!)
 app!.setAttribute("swapped-drawer", "true")
+app!.setDrawerWidth("120px")
+rem app!.setDrawerPlacement(BBjAppLayout.DRAWER_PLACEMENT_HIDDEN)
 
 rem Header
 rem ==================
