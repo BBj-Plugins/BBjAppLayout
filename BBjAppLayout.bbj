@@ -339,6 +339,7 @@ class public BBjAppLayout
       case default
         methodret BBjAppLayout.DRAWER_PLACEMENT_LEFT
         break
+    swend
   methodend
   rem /**
   rem  * Set the drawer width
