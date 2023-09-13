@@ -2,7 +2,7 @@
 
 <p>
   <a href="http://www.basis.cloud/downloads">
-    <img src="https://img.shields.io/badge/BBj-v22.04-blue" alt="BBj v22.04" />
+    <img src="https://img.shields.io/badge/BBj-v24.00-blue" alt="BBj v24.00" />
   </a>
   <a href="https://github.com/BBj-Plugins/BBjAppLayout/blob/master/README.md">
     <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="BBjAppLayout is released under the MIT license." />
@@ -28,12 +28,13 @@
 `BBjAppLayout` is a custom BBj Widget for the DWC (Dynamic Web Client) which allows for building common application layouts.
 The layout is responsive and it adjusts itself to fit the different screens sizes.
 
-It consist of a header, a footer, a collapsible drawer and a content area. Each one of these sections is an instance of [`BBjChildWindow`][bbjchildwindow].
+It consist of a header, a footer, a collapsible drawer and a content area. Each one of these sections is by default an instance of [`BBjChildWindow`][bbjchildwindow].
 Usually the header and the footer are fixed, the drawer slides in and out of the viewport
 and the content area is scrollable.
 
-?> **Note:** A DWC application can have one and only one `BBjAppLayout` instance. Having multiple instances is not supported. Also the [`BBjTopLevelWindow`][bbjtoplevelwindow] should set the `$00001000$` flag to fill the viewport.
+?> **Note:** A DWC application can have one and only one `BBjAppLayout` instance. Having multiple instances is not supported. 
 
+?> **Note:** The [`BBjTopLevelWindow`][bbjtoplevelwindow] should set the `$00001000$` flag to fill the viewport.
 ## Installation
 
 - Clone the [project](https://github.com/BBj-Plugins/BBjAppLayout) locally , then add `BBjAppLayout` to your BBj paths

@@ -58,6 +58,7 @@ app!.setHeaderReveal(1)
 
 rem Header
 rem ==================
+declare auto BBjChildWindow header!
 header! = app!.getHeader()
 firstToolbar! = header!.addChildWindow("", $00108800$, sysgui!.getAvailableContext())
 firstToolbar!.addStyle("bbj-toolbar")
@@ -75,6 +76,7 @@ secondToolbarMenu!.addTab("<bbj-icon name='history'></bbj-icon>       History"  
 
 rem Drawer
 rem ==================
+declare auto BBjChildWindow drawer!
 drawer! = app!.getDrawer()
 drawer!.addStyle("bbj-drawer")
 
@@ -96,6 +98,7 @@ drawerMenu!.addTab("<bbj-icon name='chart-dots-2'></bbj-icon>   Analytics"    , 
 
 rem Content
 rem ==================
+declare auto BBjChildWindow content!
 content! = app!.getContent()
 content!.addStyle("bbj-content")
 pageHeader! = content!.addStaticText("<html><h1>Application Title</h1></html>")
@@ -122,6 +125,7 @@ next
 process_events
 
 onPageChanged:
+  declare auto BBjTabSelectedEvent event!
   event! = sysgui!.getLastEvent() 
   title$ = event!.getTitle().replaceAll("<[^>]*>","").trim()
 

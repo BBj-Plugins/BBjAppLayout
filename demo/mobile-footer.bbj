@@ -45,6 +45,7 @@ app!.setDrawerPlacement(BBjAppLayout.DRAWER_PLACEMENT_HIDDEN)
 
 rem Header
 rem ==================
+declare auto BBjChildWindow header!
 header! = app!.getHeader()
 toolbar! = header!.addChildWindow("", $00108800$, sysgui!.getAvailableContext())
 toolbar!.addStyle("bbj-toolbar")
@@ -54,6 +55,7 @@ toolbar!.addStaticText("<html><h3>DWC Application</h3></html>")
 
 rem Footer
 rem ==================
+declare auto BBjChildWindow footer!
 footer! = app!.getFooter()
 footer!.addStyle("bbj-footer")
 
@@ -71,6 +73,7 @@ footerMenu!.addTab("<bbj-icon expanse='s' name='files'></bbj-icon>          <spa
 
 rem Content
 rem ==================
+declare auto BBjChildWindow content!
 content! = app!.getContent()
 content!.addStaticText("<html><h1>Application Title</h1></html>")
 pageContent! = content!.addStaticText("<html><p>Content goes here</p></html>")
@@ -78,6 +81,7 @@ pageContent! = content!.addStaticText("<html><p>Content goes here</p></html>")
 process_events
 
 onPageChanged:
+  declare auto BBjTabSelectedEvent event!
   event! = sysgui!.getLastEvent() 
   title$ = event!.getTitle().replaceAll("<[^>]*>","").trim()
 

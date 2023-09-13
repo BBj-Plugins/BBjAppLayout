@@ -1,6 +1,6 @@
 {
   "name": "BBjAppLayout",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": false,
   "description": "A DWC widget for building common application layouts",
   "author": "BASIS Europe Distribution GmbH",
@@ -19,7 +19,7 @@
   "bugs": {
     "url": "https://github.com/BBj-Plugins/BBjAppLayout/issues"
   },
-  "bbj_dependency": "22.04",
+  "bbj_dependency": "24.00",
   "client": [
     "DWC"
   ],

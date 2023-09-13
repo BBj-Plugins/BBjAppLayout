@@ -55,6 +55,7 @@ rem app!.setDrawerPlacement(BBjAppLayout.DRAWER_PLACEMENT_HIDDEN)
 
 rem Header
 rem ==================
+declare auto BBjChildWindow header!
 header! = app!.getHeader()
 toolbar! = header!.addChildWindow("", $00108800$, sysgui!.getAvailableContext())
 toolbar!.addStyle("bbj-toolbar")
@@ -63,6 +64,7 @@ toolbar!.addStaticText("<html><h3>DWC Application</h3></html>")
 
 rem Drawer
 rem ==================
+declare auto BBjChildWindow drawer!
 drawer! = app!.getDrawer()
 drawer!.addStyle("bbj-drawer")
 
@@ -84,6 +86,7 @@ drawerMenu!.addTab("<span part='tab-title'><bbj-icon name='chart-dots-2'></bbj-i
 
 rem Content
 rem ==================
+declare auto BBjChildWindow content!
 content! = app!.getContent()
 content!.addStaticText("<html><h1>Application Title</h1></html>")
 pageContent! = content!.addStaticText("<html><p>Content goes here</p></html>")
@@ -91,6 +94,7 @@ pageContent! = content!.addStaticText("<html><p>Content goes here</p></html>")
 process_events
 
 onPageChanged:
+  declare auto BBjTabSelectedEvent event!
   event! = sysgui!.getLastEvent() 
   title$ = event!.getTitle().replaceAll("<[^>]*>","").trim()
 
