@@ -2,7 +2,7 @@
 
 <p>
   <a href="http://www.basis.cloud/downloads">
-    <img src="https://img.shields.io/badge/BBj-v22.04-blue" alt="BBj v22.04" />
+    <img src="https://img.shields.io/badge/BBj-v24.00-blue" alt="BBj v24.00" />
   </a>
   <a href="https://github.com/BBj-Plugins/BBjAppLayout/blob/master/README.md">
     <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="BBjAppLayout is released under the MIT license." />
