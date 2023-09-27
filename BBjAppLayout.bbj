@@ -83,10 +83,6 @@ class public BBjAppLayout
   rem  */
   field public static BBjNumber ON_DRAWER_TOGGLED = 512
   rem /**
-  rem  * The drawer control.
-  rem  */
-  field public BBjControl Drawer!
-  rem /**
   rem  * The layout drawer placement.
   rem  *
   rem  * @see BBjAppLayout.DRAWER_PLACEMENT_LEFT
@@ -115,10 +111,6 @@ class public BBjAppLayout
   rem  */
   field public BBjString DrawerBreakpoint! = "(max-width: 800px)"
   rem /**
-  rem  * The header control.
-  rem  */
-  field public BBjControl Header!
-  rem /**
   rem  * TWhen set to scroll, the footer will have a shadow after revealing.
   rem  * When set to always, the shadow will always be visible, otherwise, it's hidden.
   rem  *
@@ -140,14 +132,6 @@ class public BBjAppLayout
   rem  */
   field public BBjNumber HeaderReveal! = 0
   rem /**
-  rem  * The content control.
-  rem  */
-  field public BBjControl Content!
-  rem /**
-  rem  * The footer control.
-  rem  */
-  field public BBjControl Footer!
-  rem /**
   rem  * When set to scroll, the footer will have a shadow after revealing.
   rem  * When set to always, the shadow will always be visible, otherwise, it's hidden.
   rem  *
@@ -168,13 +152,19 @@ class public BBjAppLayout
   rem  * When true, the footer will be revealed when the user scrolls down.
   rem  */
   field public BBjNumber FooterReveal! = 0
+  field private BBjControl Drawer!
+  field private BBjControl Header!
+  field private BBjControl Content!
+  field private BBjControl Footer!
   field private BBjWebComponent WebComponent!
+  field private BBjWindow Window!
   rem /**
   rem * Constructs a new BBjAppLayout.
   rem *
   rem * @param wnd! the window instance
   rem */
   method public BBjAppLayout(BBjWindow window!)
+    #Window! = window!
     #WebComponent! = window!.addWebComponent("bbj-app-layout")
     #WebComponent!.setStyle("width","")
     #WebComponent!.setStyle("height","")
@@ -183,10 +173,6 @@ class public BBjAppLayout
     #WebComponent!.setFocusable(0)
     #WebComponent!.setCallback("bbj-drawer-opened", #this!, "handleClientEvents")
     #WebComponent!.setCallback("bbj-drawer-closed", #this!, "handleClientEvents")
-    #setDrawer(window!.addChildWindow("", $00108800$, BBjAPI().getSysGui().getAvailableContext()))
-    #setHeader(window!.addChildWindow("", $00108800$, BBjAPI().getSysGui().getAvailableContext()))
-    #setContent(window!.addChildWindow("", $00108800$, BBjAPI().getSysGui().getAvailableContext()))
-    #setFooter(window!.addChildWindow("", $00108800$, BBjAPI().getSysGui().getAvailableContext()))
   methodend
   rem /**
   rem  * Gets the components's id.
@@ -198,14 +184,28 @@ class public BBjAppLayout
   methodend
   rem /**
   rem  * Sets the drawer control.
-  rem *
-  rem * @param drawer! the drawer instance
-  rem */
+  rem  *
+  rem  * @param drawer! the drawer instance
+  rem  */
   method public void setDrawer(BBjControl drawer!)
     #verifySlot(drawer!)
     #Drawer! = drawer!
     #getWebComponent().setSlot("drawer", #getDrawer())
   methodend
+  rem /**
+  rem  * Get the drawer control.
+  rem  *
+  rem  * IF the drawer is not set, the METHOD will create a new BBjChildWindow AND set it as drawer.
+  rem  *
+  rem  * @return BBjControl
+  rem  */
+  METHOD public BBjControl getDrawer()
+    IF(#Drawer! = null())
+      #setDrawer(#Window!.addChildWindow("", $00108800$, BBjAPI().getSysGui().getAvailableContext()))
+    FI
+
+    methodret #Drawer!
+  METHODEND
   rem /**
   rem  * Opens the drawer.
   rem  */
@@ -237,9 +237,11 @@ class public BBjAppLayout
   rem  */
   method public BBjNumber isDrawerOpened()
     isDrawerOpened! = #getWebComponent().getClientProperty("drawerOpened")
+
     if(isDrawerOpened! = null())
       isDrawerOpened! = ""
     fi
+
     methodret num(iff(str(isDrawerOpened!) = "true", 1, 0))
   methodend
   rem /**
@@ -333,6 +335,20 @@ class public BBjAppLayout
     #getWebComponent().setSlot("header", #getHeader())
   methodend
   rem /**
+  rem  * Get the header control.
+  rem  *
+  rem  * IF the header is not set, the METHOD will create a new BBjChildWindow AND set it as header.
+  rem  *
+  rem  * @return BBjControl
+  rem  */
+  method public BBjControl getHeader()
+    if(#Header! = null())
+      #setHeader(#Window!.addChildWindow("", $00108800$, BBjAPI().getSysGui().getAvailableContext()))
+    fi
+
+    methodret #Header!
+  methodend
+  rem /**
   rem  * Set the header shadow type.
   rem  *
   rem  * When `scroll` then the header will have a shadow after revealing.
@@ -402,6 +418,20 @@ class public BBjAppLayout
     #getWebComponent().setSlot(#getContent())
   methodend
   rem /**
+  rem  * Get the content control.
+  rem  *
+  rem  * IF the content is not set, the METHOD will create a new BBjChildWindow AND set it as content.
+  rem  *
+  rem  * @return BBjControl
+  rem  */
+  method public BBjControl getContent()
+    if(#Content! = null())
+      #setContent(#Window!.addChildWindow("", $00108800$, BBjAPI().getSysGui().getAvailableContext()))
+    fi
+
+    methodret #Content!
+  methodend
+  rem /**
   rem * Sets the footer control.
   rem *
   rem * @param footer! the footer instance
@@ -411,6 +441,20 @@ class public BBjAppLayout
     #verifySlot(footer!)
     #Footer! = footer!
     #getWebComponent().setSlot("footer", #getFooter())
+  methodend
+  rem /**
+  rem  * Get the footer control.
+  rem  *
+  rem  * IF the footer is not set, the METHOD will create a new BBjChildWindow AND set it as footer.
+  rem  *
+  rem  * @return BBjControl
+  rem  */
+  method public BBjControl getFooter()
+    if(#Footer! = null())
+      #setFooter(#Window!.addChildWindow("", $00108800$, BBjAPI().getSysGui().getAvailableContext()))
+    fi
+
+    methodret #Footer!
   methodend
   rem /**
   rem  * Set the footer shadow type.
@@ -516,7 +560,7 @@ class public BBjAppLayout
   rem  * Handle the client events.
   rem  *
   rem  * <b>IMPORTANT</b> This method is not meant to be part of the public API of the control
-  rem  * 
+  rem  *
   rem  * @param ev! The Javascript event
   rem  *
   rem  * @ignore
@@ -545,11 +589,11 @@ class public BBjAppLayout
   rem  */
   method private void verifySlot(BBjControl slot!)
     if(slot! = null())
-      throw "The slot cannot be null", 256
+      throw "The control cannot be null", 256
     fi
 
     if(slot!.isDestroyed())
-      throw "The passed component is destroyed", 256
+      throw "The passed control is destroyed", 256
     fi
   methodend
 
