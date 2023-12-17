@@ -1,5 +1,6 @@
 style! = "
 : body,html {overflow: hidden}
+: h3 {margin: var(--bbj-space-m) 0}
 :
 : .bbj-toolbar {
 :    display: flex;
