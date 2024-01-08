@@ -280,7 +280,7 @@ class public BBjAppLayout
   rem  */
   method public void setDrawerWidth(BBjString width!)
     #DrawerWidth! = width!
-    #getWebComponent().putClientProperty("drawerWidth", width!)
+    #getWebComponent().setStyle("--bbj-app-layout-drawer-width", width!)
   methodend
   rem /**
   rem  * Set the drawer width.
