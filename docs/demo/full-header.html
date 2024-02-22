@@ -9,11 +9,11 @@
     <title>BBjAppLayout - Full Header</title>
     <script
       type="module"
-      src="//s3-eu-west-1.amazonaws.com/cdn.bbx.kitchen/next/bbj-ui.esm.js"
+      src="//s3-eu-west-1.amazonaws.com/cdn.bbx.kitchen/next/dwc-ui.esm.js"
     ></script>
-    <script nomodule src="//s3-eu-west-1.amazonaws.com/cdn.bbx.kitchen/next/bbj-ui.js"></script>
+    <script nomodule src="//s3-eu-west-1.amazonaws.com/cdn.bbx.kitchen/next/dwc-ui.js"></script>
 
-    <link rel="stylesheet" href="//s3-eu-west-1.amazonaws.com/cdn.bbx.kitchen/next/bbj-ui.css" />
+    <link rel="stylesheet" href="//s3-eu-west-1.amazonaws.com/cdn.bbx.kitchen/next/dwc-ui.css" />
     <style>
       html,
       body {
@@ -21,87 +21,87 @@
         margin: 0;
         padding: 0;
       }
-      h3 {margin: var(--bbj-space-m) 0}
+      h3 {margin: var(--dwc-space-m) 0}
       
-      .bbj-logo {
+      .dwc-logo {
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: var(--bbj-space-m) 0;
-        margin-bottom: var(--bbj-space-m);
-        border-bottom: thin solid var(--bbj-color-default);
+        padding: var(--dwc-space-m) 0;
+        margin-bottom: var(--dwc-space-m);
+        border-bottom: thin solid var(--dwc-color-default);
       }
 
-      .bbj-logo img {
+      .dwc-logo img {
         max-width: 100px;
       }
 
-      .bbj-toolbar {
+      .dwc-toolbar {
         display: flex;
         align-items: center;
-        gap: var(--bbj-space-m);
-        padding: 0 var(--bbj-space-m);
+        gap: var(--dwc-space-m);
+        padding: 0 var(--dwc-space-m);
       }
 
       hr {
-        border: thin solid var(--bbj-color-default-light);
+        border: thin solid var(--dwc-color-default-light);
       }
     </style>
   </head>
 
   <body>
     <div>
-      <bbj-app-layout fit-viewport header-offscreen="false">
+      <dwc-app-layout fit-viewport header-offscreen="false">
         <div slot="header">
-          <div class="bbj-toolbar">
-            <bbj-icon-button name="menu-2" data-drawer-toggle></bbj-icon-button>
+          <div class="dwc-toolbar">
+            <dwc-icon-button name="menu-2" data-drawer-toggle></dwc-icon-button>
             <h3 data-app-title>DWC Application</h3>
           </div>
         </div>
 
         <div slot="drawer">
-          <div class="bbj-logo">
+          <div class="dwc-logo">
             <img src="./assets/logo.png" alt="logo" />
           </div>
-          <bbj-tabs-list placement="left" nobody borderless>
-            <bbj-tab slot="nav" data-name="Dashboard">
-              <bbj-icon name="dashboard"></bbj-icon>
+          <dwc-tabbed-pane placement="left" nobody borderless>
+            <dwc-tab slot="nav" data-name="Dashboard">
+              <dwc-icon name="dashboard"></dwc-icon>
               Dashboard
-            </bbj-tab>
-            <bbj-tab slot="nav" data-name="Orders">
-              <bbj-icon name="shopping-cart"></bbj-icon>
+            </dwc-tab>
+            <dwc-tab slot="nav" data-name="Orders">
+              <dwc-icon name="shopping-cart"></dwc-icon>
               Orders
-            </bbj-tab>
-            <bbj-tab slot="nav" data-name="Customers">
-              <bbj-icon name="users"></bbj-icon>
+            </dwc-tab>
+            <dwc-tab slot="nav" data-name="Customers">
+              <dwc-icon name="users"></dwc-icon>
               Customers
-            </bbj-tab>
-            <bbj-tab slot="nav" data-name="Products">
-              <bbj-icon name="box"></bbj-icon>
+            </dwc-tab>
+            <dwc-tab slot="nav" data-name="Products">
+              <dwc-icon name="box"></dwc-icon>
               Products
-            </bbj-tab>
-            <bbj-tab slot="nav" data-name="Documents">
-              <bbj-icon name="files"></bbj-icon>
+            </dwc-tab>
+            <dwc-tab slot="nav" data-name="Documents">
+              <dwc-icon name="files"></dwc-icon>
               Documents
-            </bbj-tab>
-            <bbj-tab slot="nav" data-name="Tasks">
-              <bbj-icon name="checklist"></bbj-icon>
+            </dwc-tab>
+            <dwc-tab slot="nav" data-name="Tasks">
+              <dwc-icon name="checklist"></dwc-icon>
               Tasks
-            </bbj-tab>
-            <bbj-tab slot="nav" data-name="Analytics">
-              <bbj-icon name="chart-dots-2"></bbj-icon>
+            </dwc-tab>
+            <dwc-tab slot="nav" data-name="Analytics">
+              <dwc-icon name="chart-dots-2"></dwc-icon>
               Analytics
-            </bbj-tab>
-          </bbj-tabs-list>
+            </dwc-tab>
+          </dwc-tabbed-pane>
         </div>
 
         <h1>Application Title</h1>
         <p>Content goes here</p>
-      </bbj-app-layout>
+      </dwc-app-layout>
 
       <script>
-        const tabs = document.querySelector('bbj-tabs-list');
-        tabs.addEventListener('bbj-tab-selected', (e) => {
+        const tabs = document.querySelector('dwc-tabbed-pane');
+        tabs.addEventListener('dwc-tab-selected', (e) => {
           const content = document.querySelector('p');
           content.innerHTML = `Content for ${e.detail.tab.dataset.name} goes here`;
         });

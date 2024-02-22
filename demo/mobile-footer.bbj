@@ -1,26 +1,26 @@
 style! = "
 : body,html {overflow: hidden}
-: h3 {margin: var(--bbj-space-m) 0}
+: h3 {margin: var(--dwc-space-m) 0}
 :
-: .bbj-toolbar {
+: .dwc-toolbar {
 :    display: flex;
 :    align-items: center;
-:    gap: var(--bbj-space-m);
-:    padding: 0 var(--bbj-space-m);
+:    gap: var(--dwc-space-m);
+:    padding: 0 var(--dwc-space-m);
 : }
 :
-: .bbj-logo {
+: .dwc-logo {
 :    display: flex;
 :    align-items: center;
 :    justify-content: center;
 : }
 :
-: .bbj-logo img {
+: .dwc-logo img {
 :    height: 24px;
 : }
 :
 : @media (max-width: 600px) {  
-:  bbj-tab::part(title) { 
+:  dwc-tab::part(title) { 
 :     display: none;
 :   }    
 : }
@@ -49,16 +49,16 @@ rem ==================
 declare auto BBjChildWindow header!
 header! = app!.getHeader()
 toolbar! = header!.addChildWindow("", $00108800$, sysgui!.getAvailableContext())
-toolbar!.addStyle("bbj-toolbar")
+toolbar!.addStyle("dwc-toolbar")
 logo! = toolbar!.addImageCtrl(imageManager!.loadImageFromFile("./assets/logo.png"))
-logo!.addStyle("bbj-logo")
+logo!.addStyle("dwc-logo")
 toolbar!.addStaticText("<html><h3>DWC Application</h3></html>")
 
 rem Footer
 rem ==================
 declare auto BBjChildWindow footer!
 footer! = app!.getFooter()
-footer!.addStyle("bbj-footer")
+footer!.addStyle("dwc-footer")
 
 footerMenu! = footer!.addTabCtrl()
 footerMenu!.setCallback(footerMenu!.ON_TAB_SELECT, "onPageChanged")
@@ -66,11 +66,11 @@ footerMenu!.setAttribute("nobody","true")
 footerMenu!.setAttribute("borderless","true")
 footerMenu!.setAttribute("placement","bottom")
 footerMenu!.setAttribute("alignment","stretch")
-footerMenu!.addTab("<bbj-icon expanse='s' name='dashboard'></bbj-icon>      <span part='title'>Dashboard</span>"    , -1)
-footerMenu!.addTab("<bbj-icon expanse='s' name='shopping-cart'></bbj-icon>  <span part='title'>Orders</span>"       , -1)
-footerMenu!.addTab("<bbj-icon expanse='s' name='users'></bbj-icon>          <span part='title'>Customers</span>"    , -1)
-footerMenu!.addTab("<bbj-icon expanse='s' name='box'></bbj-icon>            <span part='title'>Products</span>"     , -1)
-footerMenu!.addTab("<bbj-icon expanse='s' name='files'></bbj-icon>          <span part='title'>Documents</span>"    , -1)
+footerMenu!.addTab("<dwc-icon expanse='s' name='dashboard'></dwc-icon>      <span part='title'>Dashboard</span>"    , -1)
+footerMenu!.addTab("<dwc-icon expanse='s' name='shopping-cart'></dwc-icon>  <span part='title'>Orders</span>"       , -1)
+footerMenu!.addTab("<dwc-icon expanse='s' name='users'></dwc-icon>          <span part='title'>Customers</span>"    , -1)
+footerMenu!.addTab("<dwc-icon expanse='s' name='box'></dwc-icon>            <span part='title'>Products</span>"     , -1)
+footerMenu!.addTab("<dwc-icon expanse='s' name='files'></dwc-icon>          <span part='title'>Documents</span>"    , -1)
 
 rem Content
 rem ==================

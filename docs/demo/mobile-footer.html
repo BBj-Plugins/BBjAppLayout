@@ -9,11 +9,11 @@
     <title>BBjAppLayout - Mobile Footer</title>
     <script
       type="module"
-      src="//s3-eu-west-1.amazonaws.com/cdn.bbx.kitchen/next/bbj-ui.esm.js"
+      src="//s3-eu-west-1.amazonaws.com/cdn.bbx.kitchen/next/dwc-ui.esm.js"
     ></script>
-    <script nomodule src="//s3-eu-west-1.amazonaws.com/cdn.bbx.kitchen/next/bbj-ui.js"></script>
+    <script nomodule src="//s3-eu-west-1.amazonaws.com/cdn.bbx.kitchen/next/dwc-ui.js"></script>
 
-    <link rel="stylesheet" href="//s3-eu-west-1.amazonaws.com/cdn.bbx.kitchen/next/bbj-ui.css" />
+    <link rel="stylesheet" href="//s3-eu-west-1.amazonaws.com/cdn.bbx.kitchen/next/dwc-ui.css" />
     <style>
       html,
       body {
@@ -21,27 +21,27 @@
         margin: 0;
         padding: 0;
       }
-      h3 {margin: var(--bbj-space-m) 0}
+      h3 {margin: var(--dwc-space-m) 0}
 
-      .bbj-logo {
+      .dwc-logo {
         display: flex;
         align-items: center;
         justify-content: center;
       }
 
-      .bbj-logo img {
+      .dwc-logo img {
         max-width: 24px;
       }
 
-      .bbj-toolbar {
+      .dwc-toolbar {
         display: flex;
         align-items: center;
-        gap: var(--bbj-space-m);
-        padding: 0 var(--bbj-space-m);
+        gap: var(--dwc-space-m);
+        padding: 0 var(--dwc-space-m);
       }
 
       @media (max-width: 600px) {
-        bbj-tab span {
+        dwc-tab span {
           display: none;
         }
       }
@@ -50,10 +50,10 @@
 
   <body>
     <div>
-      <bbj-app-layout fit-viewport drawer-placement="hidden">
+      <dwc-app-layout fit-viewport drawer-placement="hidden">
         <div slot="header">
-          <div class="bbj-toolbar">
-            <div class="bbj-logo">
+          <div class="dwc-toolbar">
+            <div class="dwc-logo">
               <img src="./assets/logo.png" alt="logo" />
             </div>
             <h3 data-app-title>DWC Application</h3>
@@ -61,39 +61,39 @@
         </div>
 
         <div slot="footer">
-          <bbj-tabs-list placement="bottom" alignment="stretch" nobody borderless>
-            <bbj-tab slot="nav" data-name="Dashboard">
-              <bbj-icon expanse="s" name="dashboard"></bbj-icon>
+          <dwc-tabbed-pane placement="bottom" alignment="stretch" nobody borderless>
+            <dwc-tab slot="nav" data-name="Dashboard">
+              <dwc-icon expanse="s" name="dashboard"></dwc-icon>
               <span>Dashboard</span>
-            </bbj-tab>
-            <bbj-tab slot="nav" data-name="Orders">
-              <bbj-icon expanse="s" name="shopping-cart"></bbj-icon>
+            </dwc-tab>
+            <dwc-tab slot="nav" data-name="Orders">
+              <dwc-icon expanse="s" name="shopping-cart"></dwc-icon>
               <span>Orders</span>
-            </bbj-tab>
-            <bbj-tab slot="nav" data-name="Customers">
-              <bbj-icon expanse="s" name="users"></bbj-icon>
+            </dwc-tab>
+            <dwc-tab slot="nav" data-name="Customers">
+              <dwc-icon expanse="s" name="users"></dwc-icon>
               <span>Customers</span>
-            </bbj-tab>
-            <bbj-tab slot="nav" data-name="Products">
-              <bbj-icon expanse="s" name="box"></bbj-icon>
+            </dwc-tab>
+            <dwc-tab slot="nav" data-name="Products">
+              <dwc-icon expanse="s" name="box"></dwc-icon>
               <span>Products</span>
-            </bbj-tab>
-            <bbj-tab slot="nav" data-name="Documents">
-              <bbj-icon expanse="s" name="files"></bbj-icon>
+            </dwc-tab>
+            <dwc-tab slot="nav" data-name="Documents">
+              <dwc-icon expanse="s" name="files"></dwc-icon>
               <span>Documents</span>
-            </bbj-tab>
-          </bbj-tabs-list>
+            </dwc-tab>
+          </dwc-tabbed-pane>
         </div>
 
         <h1>Application Title</h1>
         <p>Content goes here</p>
-      </bbj-app-layout>
+      </dwc-app-layout>
 
       <script>
         const tabs = document.querySelector(
-          'bbj-tabs-list[placement="bottom"]'
+          'dwc-tabbed-pane[placement="bottom"]'
         );
-        tabs.addEventListener("bbj-tab-selected", (e) => {
+        tabs.addEventListener("dwc-tab-selected", (e) => {
           const content = document.querySelector("p");
           content.innerHTML = `Content for ${e.detail.tab.dataset.name} goes here`;
         });

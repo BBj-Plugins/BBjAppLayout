@@ -18,16 +18,16 @@
     />
     <script
       type="module"
-      src="//s3-eu-west-1.amazonaws.com/cdn.bbx.kitchen/next/bbj-ui.esm.js"
+      src="//s3-eu-west-1.amazonaws.com/cdn.bbx.kitchen/next/dwc-ui.esm.js"
     ></script>
     <script
       nomodule
-      src="//s3-eu-west-1.amazonaws.com/cdn.bbx.kitchen/next/bbj-ui.js"
+      src="//s3-eu-west-1.amazonaws.com/cdn.bbx.kitchen/next/dwc-ui.js"
     ></script>
 
     <link
       rel="stylesheet"
-      href="//s3-eu-west-1.amazonaws.com/cdn.bbx.kitchen/next/bbj-ui.css"
+      href="//s3-eu-west-1.amazonaws.com/cdn.bbx.kitchen/next/dwc-ui.css"
     />
     <link
       rel="stylesheet"
@@ -43,8 +43,8 @@
     />
     <style>
       :root {
-        --bbj-preview-primary-color: black;
-        --bbj-preview-secondary-color: #333;
+        --dwc-preview-primary-color: black;
+        --dwc-preview-secondary-color: #333;
       }
 
       .markdown-section {
@@ -92,7 +92,7 @@
       .demo__preview__content {
         width: 100%;
         height: 100%;
-        background: var(--bbj-surface-3);
+        background: var(--dwc-surface-3);
       }
 
       .demo__preview__content iframe {
@@ -102,15 +102,15 @@
       }
 
       .demo__buttons {
-        background: var(--bbj-preview-primary-color);
+        background: var(--dwc-preview-primary-color);
         display: flex;
         justify-content: center;
         gap: 1rem;
         padding: 1rem;
-        border-radius: var(--bbj-border-radius-m);
+        border-radius: var(--dwc-border-radius-m);
         margin-top: -60px;
         z-index: 1;
-        box-shadow: var(--bbj-shadow-m);
+        box-shadow: var(--dwc-shadow-m);
       }
 
       .demo__buttons a,
@@ -134,8 +134,8 @@
 
       .demo__code pre {
         margin-top: 22px;
-        border: thin solid var(--bbj-color-default-dark);
-        border-radius: var(--bbj-border-radius-m);
+        border: thin solid var(--dwc-color-default-dark);
+        border-radius: var(--dwc-border-radius-m);
       }
 
       .demo--phone .demo__code {
@@ -171,9 +171,9 @@
       }
 
       .line-numbers .line-numbers-rows {
-        border-right: 2px solid var(--bbj-color-default);
+        border-right: 2px solid var(--dwc-color-default);
         /* Fix paddings to align with code.*/
-        padding: var(--bbj-space-m) 0;
+        padding: var(--dwc-space-m) 0;
       }
     </style>
   </head>
@@ -182,7 +182,7 @@
     <div id="app"></div>
     <script>
       window.$docsify = {
-        themeColor: "var(--bbj-color-primary)",
+        themeColor: "var(--dwc-color-primary)",
         name: "",
         repo: "https://github.com/BBj-Plugins/BBjAppLayout",
         coverpage: false,
@@ -227,7 +227,7 @@
                       ? "block"
                       : "none";
 
-                  const icon = button.querySelector("bbj-icon");
+                  const icon = button.querySelector("dwc-icon");
                   icon.setAttribute(
                     "name",
                     icon.getAttribute("name") === "chevron-down"

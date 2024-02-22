@@ -10,8 +10,8 @@
   <a href="https://github.com/necolas/issue-guidelines/blob/master/CONTRIBUTING.md#pull-requests">
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs welcome!" />
   </a>
-   <a href="https://basishub.github.io/basis-next/#/dwc/bbj-app-layout">
-    <img src="https://img.shields.io/badge/Component-bbj--app--layout-%23006aff" alt="Tag Name">
+   <a href="https://basishub.github.io/basis-next/#/dwc/dwc-app-layout">
+    <img src="https://img.shields.io/badge/Component-dwc--app--layout-%23006aff" alt="Tag Name">
   </a>
 </p>
 
@@ -19,7 +19,7 @@
 
 [bbjtoplevelwindow]: https://documentation.basis.cloud/BASISHelp/WebHelp/bbjobjects/Window/bbjtoplevelwindow/bbjtoplevelwindow.htm
 [bbjchildwindow]: https://documentation.basis.cloud/BASISHelp/WebHelp/bbjobjects/Window/bbjchildwindow/bbjchildwindow.htm
-[bbj-icon-button]: https://basishub.github.io/basis-next/#/dwc/bbj-icon-button
+[bbj-icon-button]: https://basishub.github.io/basis-next/#/dwc/dwc-icon-button
 [css-vars]: https://basishub.github.io/basis-next/#/theme-engine/css-variables
 [viewport-meta-tag]: https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag
 [media-query]: https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries
@@ -63,7 +63,7 @@ meta$ = "width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalabl
 web!.setMeta("viewport", meta$)
 ```
 
-!> **Tip:** The demos uses the [`bbj-icon-button`][bbj-icon-button] web component to create a drawer toggle button. The button has the `data-drawer-toggle` attribute which instructs the `BBjAppLayout` to listen to click events coming from that component to toggle the drawer state.
+!> **Tip:** The demos uses the [`dwc-icon-button`][dwc-icon-button] web component to create a drawer toggle button. The button has the `data-drawer-toggle` attribute which instructs the `BBjAppLayout` to listen to click events coming from that component to toggle the drawer state.
 
 ```bbj
 use ::BBjAppLayout/BBjAppLayout.bbj::BBjAppLayout
@@ -71,13 +71,13 @@ use ::BBjAppLayout/BBjAppLayout.bbj::BBjAppLayout
 app! = new BBjAppLayout(wnd!)
 header! = app!.getHeader()
 toolbar! = header!.addChildWindow("", $00108800$, sysgui!.getAvailableContext())
-toolbar!.addStyle("bbj-toolbar")
+toolbar!.addStyle("dwc-toolbar")
 
 REM - Add a toggle button which works independently in the browser
 toolbar!.addStaticText("
 :<html>
-: <bbj-icon-button name='menu-2' data-drawer-toggle>
-: </bbj-icon-button>
+: <dwc-icon-button name='menu-2' data-drawer-toggle>
+: </dwc-icon-button>
 :</html>")
 
 toolbar!.addStaticText("<html><h3>DWC Application</h3></html>")
@@ -93,10 +93,10 @@ toolbar!.addStaticText("<html><h3>DWC Application</h3></html>")
 
   <div class="demo__buttons">
     <a  data-action-toggle-code>
-      <bbj-icon name="chevron-down"></bbj-icon> Show code
+      <dwc-icon name="chevron-down"></dwc-icon> Show code
     </a>
     <a data-action-open-link>
-      <bbj-icon name="external-link"></bbj-icon> Open in new tab
+      <dwc-icon name="external-link"></dwc-icon> Open in new tab
     </a>  
   </div>
 
@@ -106,23 +106,23 @@ toolbar!.addStaticText("<html><h3>DWC Application</h3></html>")
 style! = "
 : body,html {overflow: hidden}
 :
-: .bbj-toolbar {
+: .dwc-toolbar {
 :    display: flex;
 :    align-items: center;
-:    gap: var(--bbj-space-m);
-:    padding: 0 var(--bbj-space-m);
+:    gap: var(--dwc-space-m);
+:    padding: 0 var(--dwc-space-m);
 : }
 :
-: .bbj-logo {
+: .dwc-logo {
 :    display: flex;
 :    align-items: center;
 :    justify-content: center;
-:    padding: var(--bbj-space-m) 0;
-:    margin-bottom: var(--bbj-space-m);
-:    border-bottom: thin solid var(--bbj-color-default)
+:    padding: var(--dwc-space-m) 0;
+:    margin-bottom: var(--dwc-space-m);
+:    border-bottom: thin solid var(--dwc-color-default)
 : }
 :
-: .bbj-logo img {
+: .dwc-logo img {
 :    max-width: 100px;
 : }
 :"
@@ -147,30 +147,30 @@ rem Header
 rem ==================
 header! = app!.getHeader()
 toolbar! = header!.addChildWindow("", $00108800$, sysgui!.getAvailableContext())
-toolbar!.addStyle("bbj-toolbar")
-toolbar!.addStaticText("<html><bbj-icon-button name='menu-2' data-drawer-toggle></bbj-icon-button></html>")
+toolbar!.addStyle("dwc-toolbar")
+toolbar!.addStaticText("<html><dwc-icon-button name='menu-2' data-drawer-toggle></dwc-icon-button></html>")
 toolbar!.addStaticText("<html><h3>DWC Application</h3></html>")
 
 rem Drawer
 rem ==================
 drawer! = app!.getDrawer()
-drawer!.addStyle("bbj-drawer")
+drawer!.addStyle("dwc-drawer")
 
 logo! = drawer!.addImageCtrl(imageManager!.loadImageFromFile("./assets/logo.png"))
-logo!.addStyle("bbj-logo")
+logo!.addStyle("dwc-logo")
 
 drawerMenu! = drawer!.addTabCtrl()
 drawerMenu!.setCallback(drawerMenu!.ON_TAB_SELECT,"onPageChanged")
 drawerMenu!.setAttribute("nobody","true")
 drawerMenu!.setAttribute("borderless","true")
 drawerMenu!.setAttribute("placement","left")
-drawerMenu!.addTab("<bbj-icon name='dashboard'></bbj-icon>      Dashboard"    , -1)
-drawerMenu!.addTab("<bbj-icon name='shopping-cart'></bbj-icon>  Orders"       , -1)
-drawerMenu!.addTab("<bbj-icon name='users'></bbj-icon>          Customers"    , -1)
-drawerMenu!.addTab("<bbj-icon name='box'></bbj-icon>            Products"     , -1)
-drawerMenu!.addTab("<bbj-icon name='files'></bbj-icon>          Documents"    , -1)
-drawerMenu!.addTab("<bbj-icon name='checklist'></bbj-icon>      Tasks"        , -1)
-drawerMenu!.addTab("<bbj-icon name='chart-dots-2'></bbj-icon>   Analytics"    , -1)
+drawerMenu!.addTab("<dwc-icon name='dashboard'></dwc-icon>      Dashboard"    , -1)
+drawerMenu!.addTab("<dwc-icon name='shopping-cart'></dwc-icon>  Orders"       , -1)
+drawerMenu!.addTab("<dwc-icon name='users'></dwc-icon>          Customers"    , -1)
+drawerMenu!.addTab("<dwc-icon name='box'></dwc-icon>            Products"     , -1)
+drawerMenu!.addTab("<dwc-icon name='files'></dwc-icon>          Documents"    , -1)
+drawerMenu!.addTab("<dwc-icon name='checklist'></dwc-icon>      Tasks"        , -1)
+drawerMenu!.addTab("<dwc-icon name='chart-dots-2'></dwc-icon>   Analytics"    , -1)
 
 rem Content
 rem ==================
@@ -217,10 +217,10 @@ app!.setFooterOffscreen(0)
 
   <div class="demo__buttons">
     <a  data-action-toggle-code>
-      <bbj-icon name="chevron-down"></bbj-icon> Show code
+      <dwc-icon name="chevron-down"></dwc-icon> Show code
     </a>
     <a data-action-open-link>
-      <bbj-icon name="external-link"></bbj-icon> Open in new tab
+      <dwc-icon name="external-link"></dwc-icon> Open in new tab
     </a>  
   </div>
 
@@ -230,24 +230,24 @@ app!.setFooterOffscreen(0)
 style! = "
 : body,html {overflow: hidden}
 :
-: .bbj-toolbar {
+: .dwc-toolbar {
 :    display: flex;
 :    align-items: center;
-:    gap: var(--bbj-space-m);
-:    padding: 0 var(--bbj-space-m);
+:    gap: var(--dwc-space-m);
+:    padding: 0 var(--dwc-space-m);
 : }
 :
-: .bbj-drawer {
-:   padding-top: var(--bbj-space-m)    
+: .dwc-drawer {
+:   padding-top: var(--dwc-space-m)    
 : }
 :
-: .bbj-logo {
+: .dwc-logo {
 :    display: flex;
 :    align-items: center;
 :    justify-content: center;
 : }
 :
-: .bbj-logo img {
+: .dwc-logo img {
 :    height: 24px;
 : }
 :"
@@ -273,29 +273,29 @@ rem Header
 rem ==================
 header! = app!.getHeader()
 toolbar! = header!.addChildWindow("", $00108800$, sysgui!.getAvailableContext())
-toolbar!.addStyle("bbj-toolbar")
-toolbar!.addStaticText("<html><bbj-icon-button name='menu-2' data-drawer-toggle></bbj-icon-button></html>")
+toolbar!.addStyle("dwc-toolbar")
+toolbar!.addStaticText("<html><dwc-icon-button name='menu-2' data-drawer-toggle></dwc-icon-button></html>")
 logo! = toolbar!.addImageCtrl(imageManager!.loadImageFromFile("./assets/logo.png"))
-logo!.addStyle("bbj-logo")
+logo!.addStyle("dwc-logo")
 toolbar!.addStaticText("<html><h3>DWC Application</h3></html>")
 
 rem Drawer
 rem ==================
 drawer! = app!.getDrawer()
-drawer!.addStyle("bbj-drawer")
+drawer!.addStyle("dwc-drawer")
 
 drawerMenu! = drawer!.addTabCtrl()
 drawerMenu!.setCallback(drawerMenu!.ON_TAB_SELECT,"onPageChanged")
 drawerMenu!.setAttribute("nobody","true")
 drawerMenu!.setAttribute("borderless","true")
 drawerMenu!.setAttribute("placement","left")
-drawerMenu!.addTab("<bbj-icon name='dashboard'></bbj-icon>      Dashboard"    , -1)
-drawerMenu!.addTab("<bbj-icon name='shopping-cart'></bbj-icon>  Orders"       , -1)
-drawerMenu!.addTab("<bbj-icon name='users'></bbj-icon>          Customers"    , -1)
-drawerMenu!.addTab("<bbj-icon name='box'></bbj-icon>            Products"     , -1)
-drawerMenu!.addTab("<bbj-icon name='files'></bbj-icon>          Documents"    , -1)
-drawerMenu!.addTab("<bbj-icon name='checklist'></bbj-icon>      Tasks"        , -1)
-drawerMenu!.addTab("<bbj-icon name='chart-dots-2'></bbj-icon>   Analytics"    , -1)
+drawerMenu!.addTab("<dwc-icon name='dashboard'></dwc-icon>      Dashboard"    , -1)
+drawerMenu!.addTab("<dwc-icon name='shopping-cart'></dwc-icon>  Orders"       , -1)
+drawerMenu!.addTab("<dwc-icon name='users'></dwc-icon>          Customers"    , -1)
+drawerMenu!.addTab("<dwc-icon name='box'></dwc-icon>            Products"     , -1)
+drawerMenu!.addTab("<dwc-icon name='files'></dwc-icon>          Documents"    , -1)
+drawerMenu!.addTab("<dwc-icon name='checklist'></dwc-icon>      Tasks"        , -1)
+drawerMenu!.addTab("<dwc-icon name='chart-dots-2'></dwc-icon>   Analytics"    , -1)
 
 rem Content
 rem ==================
@@ -332,12 +332,12 @@ use ::BBjAppLayout/BBjAppLayout.bbj::BBjAppLayout
 app! = new BBjAppLayout(wnd!)
 header! = app!.getHeader()
 toolbar! = header!.addChildWindow("", $00108800$, sysgui!.getAvailableContext())
-toolbar!.addStyle("bbj-toolbar")
+toolbar!.addStyle("dwc-toolbar")
 
 toolbar!.addStaticText("
 :<html>
-: <bbj-icon-button name='menu-2' data-drawer-toggle>
-: </bbj-icon-button>
+: <dwc-icon-button name='menu-2' data-drawer-toggle>
+: </dwc-icon-button>
 :</html>")
 
 toolbar!.addStaticText("<html><h3>DWC Application</h3></html>")
@@ -348,10 +348,10 @@ empty! = secondToolbar!.addChildWindow("", $00000810$, sysgui!.getAvailableConte
 menu! = secondToolbar!.addTabCtrl()
 menu!.setAttribute("nobody","true")
 menu!.setAttribute("borderless","true")
-menu!.addTab("<bbj-icon name='report-money'></bbj-icon> Sales", empty!)
-menu!.addTab("<bbj-icon name='building'></bbj-icon> Enterprise", empty!)
-menu!.addTab("<bbj-icon name='credit-card'></bbj-icon> Payments", empty!)
-menu!.addTab("<bbj-icon name='history'></bbj-icon> History", empty!)
+menu!.addTab("<dwc-icon name='report-money'></dwc-icon> Sales", empty!)
+menu!.addTab("<dwc-icon name='building'></dwc-icon> Enterprise", empty!)
+menu!.addTab("<dwc-icon name='credit-card'></dwc-icon> Payments", empty!)
+menu!.addTab("<dwc-icon name='history'></dwc-icon> History", empty!)
 ```
 
 <div class="demo">
@@ -364,10 +364,10 @@ menu!.addTab("<bbj-icon name='history'></bbj-icon> History", empty!)
 
   <div class="demo__buttons">
     <a  data-action-toggle-code>
-      <bbj-icon name="chevron-down"></bbj-icon> Show code
+      <dwc-icon name="chevron-down"></dwc-icon> Show code
     </a>
     <a data-action-open-link>
-      <bbj-icon name="external-link"></bbj-icon> Open in new tab
+      <dwc-icon name="external-link"></dwc-icon> Open in new tab
     </a>  
   </div>
 
@@ -377,23 +377,23 @@ menu!.addTab("<bbj-icon name='history'></bbj-icon> History", empty!)
 style! = "
 : body,html {overflow: hidden}
 :
-: .bbj-toolbar {
+: .dwc-toolbar {
 :    display: flex;
 :    align-items: center;
-:    gap: var(--bbj-space-m);
-:    padding: 0 var(--bbj-space-m);
+:    gap: var(--dwc-space-m);
+:    padding: 0 var(--dwc-space-m);
 : }
 :
-: .bbj-logo {
+: .dwc-logo {
 :    display: flex;
 :    align-items: center;
 :    justify-content: center;
-:    padding: var(--bbj-space-m) 0;
-:    margin-bottom: var(--bbj-space-m);
-:    border-bottom: thin solid var(--bbj-color-default)
+:    padding: var(--dwc-space-m) 0;
+:    margin-bottom: var(--dwc-space-m);
+:    border-bottom: thin solid var(--dwc-color-default)
 : }
 :
-: .bbj-logo img {
+: .dwc-logo img {
 :    max-width: 100px;
 : }
 :"
@@ -418,39 +418,39 @@ rem Header
 rem ==================
 header! = app!.getHeader()
 firstToolbar! = header!.addChildWindow("", $00108800$, sysgui!.getAvailableContext())
-firstToolbar!.addStyle("bbj-toolbar")
-firstToolbar!.addStaticText("<html><bbj-icon-button name='menu-2' data-drawer-toggle></bbj-icon-button></html>")
+firstToolbar!.addStyle("dwc-toolbar")
+firstToolbar!.addStaticText("<html><dwc-icon-button name='menu-2' data-drawer-toggle></dwc-icon-button></html>")
 firstToolbar!.addStaticText("<html><h3>DWC Application</h3></html>")
 
 secondToolbar! = header!.addChildWindow("", $00108800$, sysgui!.getAvailableContext())
 secondToolbarMenu! = secondToolbar!.addTabCtrl()
 secondToolbarMenu!.setAttribute("nobody","true")
 secondToolbarMenu!.setAttribute("borderless","true")
-secondToolbarMenu!.addTab("<bbj-icon name='report-money'></bbj-icon>  Sales"        , -1)
-secondToolbarMenu!.addTab("<bbj-icon name='building'></bbj-icon>      Enterprise"   , -1)
-secondToolbarMenu!.addTab("<bbj-icon name='credit-card'></bbj-icon>   Payments"     , -1)
-secondToolbarMenu!.addTab("<bbj-icon name='history'></bbj-icon>       History"      , -1)
+secondToolbarMenu!.addTab("<dwc-icon name='report-money'></dwc-icon>  Sales"        , -1)
+secondToolbarMenu!.addTab("<dwc-icon name='building'></dwc-icon>      Enterprise"   , -1)
+secondToolbarMenu!.addTab("<dwc-icon name='credit-card'></dwc-icon>   Payments"     , -1)
+secondToolbarMenu!.addTab("<dwc-icon name='history'></dwc-icon>       History"      , -1)
 
 rem Drawer
 rem ==================
 drawer! = app!.getDrawer()
-drawer!.addStyle("bbj-drawer")
+drawer!.addStyle("dwc-drawer")
 
 logo! = drawer!.addImageCtrl(imageManager!.loadImageFromFile("./assets/logo.png"))
-logo!.addStyle("bbj-logo")
+logo!.addStyle("dwc-logo")
 
 drawerMenu! = drawer!.addTabCtrl()
 drawerMenu!.setCallback(drawerMenu!.ON_TAB_SELECT, "onPageChanged")
 drawerMenu!.setAttribute("nobody","true")
 drawerMenu!.setAttribute("borderless","true")
 drawerMenu!.setAttribute("placement","left")
-drawerMenu!.addTab("<bbj-icon name='dashboard'></bbj-icon>      Dashboard"    , -1)
-drawerMenu!.addTab("<bbj-icon name='shopping-cart'></bbj-icon>  Orders"       , -1)
-drawerMenu!.addTab("<bbj-icon name='users'></bbj-icon>          Customers"    , -1)
-drawerMenu!.addTab("<bbj-icon name='box'></bbj-icon>            Products"     , -1)
-drawerMenu!.addTab("<bbj-icon name='files'></bbj-icon>          Documents"    , -1)
-drawerMenu!.addTab("<bbj-icon name='checklist'></bbj-icon>      Tasks"        , -1)
-drawerMenu!.addTab("<bbj-icon name='chart-dots-2'></bbj-icon>   Analytics"    , -1)
+drawerMenu!.addTab("<dwc-icon name='dashboard'></dwc-icon>      Dashboard"    , -1)
+drawerMenu!.addTab("<dwc-icon name='shopping-cart'></dwc-icon>  Orders"       , -1)
+drawerMenu!.addTab("<dwc-icon name='users'></dwc-icon>          Customers"    , -1)
+drawerMenu!.addTab("<dwc-icon name='box'></dwc-icon>            Products"     , -1)
+drawerMenu!.addTab("<dwc-icon name='files'></dwc-icon>          Documents"    , -1)
+drawerMenu!.addTab("<dwc-icon name='checklist'></dwc-icon>      Tasks"        , -1)
+drawerMenu!.addTab("<dwc-icon name='chart-dots-2'></dwc-icon>   Analytics"    , -1)
 
 rem Content
 rem ==================
@@ -477,12 +477,12 @@ release
 
 A sticky toolbar is a toolbar that remains visible at the top of the page when the user scrolls down but the navbar height is collapsed to make more space available for the page's content. Usually this kind of toolbar contains a fixed navigation menu which is relevant to the current page.
 
-It is possible to create a sticky toolbars using the [CSS custom property][css-vars] `--bbj-app-layout-header-collapse-height` and the
+It is possible to create a sticky toolbars using the [CSS custom property][css-vars] `--dwc-app-layout-header-collapse-height` and the
 `BBjAppLayout::HeaderReveal` option.
 
 When `BBjAppLayout::HeaderReveal` option is set to true then the header will be visible at first render then hidden when the user starts scrolling down. Once the user starts scrolling up again the header will be revealed.
 
-With the help of the CSS custom property `--bbj-app-layout-header-collapse-height` it is possible to control how much of the header navbar will be hidden.
+With the help of the CSS custom property `--dwc-app-layout-header-collapse-height` it is possible to control how much of the header navbar will be hidden.
 
 <div class="demo">
 
@@ -494,10 +494,10 @@ With the help of the CSS custom property `--bbj-app-layout-header-collapse-heigh
 
   <div class="demo__buttons">
     <a  data-action-toggle-code>
-      <bbj-icon name="chevron-down"></bbj-icon> Show code
+      <dwc-icon name="chevron-down"></dwc-icon> Show code
     </a>
     <a data-action-open-link>
-      <bbj-icon name="external-link"></bbj-icon> Open in new tab
+      <dwc-icon name="external-link"></dwc-icon> Open in new tab
     </a>  
   </div>
 
@@ -508,40 +508,40 @@ style! = "
 : body,html {overflow: hidden}
 :
 : :root {   
-:   --bbj-app-layout-header-collapse-height: 45px;
+:   --dwc-app-layout-header-collapse-height: 45px;
 : }
 :
-: .bbj-toolbar {
+: .dwc-toolbar {
 :    display: flex;
 :    align-items: center;
-:    gap: var(--bbj-space-m);
-:    padding: 0 var(--bbj-space-m);
+:    gap: var(--dwc-space-m);
+:    padding: 0 var(--dwc-space-m);
 : }
 :
-: .bbj-logo {
+: .dwc-logo {
 :    display: flex;
 :    align-items: center;
 :    justify-content: center;
-:    padding: var(--bbj-space-m) 0;
-:    margin-bottom: var(--bbj-space-m);
-:    border-bottom: thin solid var(--bbj-color-default)
+:    padding: var(--dwc-space-m) 0;
+:    margin-bottom: var(--dwc-space-m);
+:    border-bottom: thin solid var(--dwc-color-default)
 : }
 :
-: .bbj-logo img {
+: .dwc-logo img {
 :    max-width: 100px;
 : }
 : 
-: .bbj-content {
+: .dwc-content {
 :   max-width: 600px;
 :   margin: 0 auto; 
 : }
 :
-: .bbj-card {
-:    padding: var(--bbj-space-m);
-:    margin: var(--bbj-space-m) 0;
-:    border: thin solid var(--bbj-color-default);
-:    border-radius: var(--bbj-border-radius-m);
-:    background-color: var(--bbj-surface-3);
+: .dwc-card {
+:    padding: var(--dwc-space-m);
+:    margin: var(--dwc-space-m) 0;
+:    border: thin solid var(--dwc-color-default);
+:    border-radius: var(--dwc-border-radius-m);
+:    background-color: var(--dwc-surface-3);
 : }
 :"
 
@@ -566,44 +566,44 @@ rem Header
 rem ==================
 header! = app!.getHeader()
 firstToolbar! = header!.addChildWindow("", $00108800$, sysgui!.getAvailableContext())
-firstToolbar!.addStyle("bbj-toolbar")
-firstToolbar!.addStaticText("<html><bbj-icon-button name='menu-2' data-drawer-toggle></bbj-icon-button></html>")
+firstToolbar!.addStyle("dwc-toolbar")
+firstToolbar!.addStaticText("<html><dwc-icon-button name='menu-2' data-drawer-toggle></dwc-icon-button></html>")
 firstToolbar!.addStaticText("<html><h3>DWC Application</h3></html>")
 
 secondToolbar! = header!.addChildWindow("", $00108800$, sysgui!.getAvailableContext())
 secondToolbarMenu! = secondToolbar!.addTabCtrl()
 secondToolbarMenu!.setAttribute("nobody","true")
 secondToolbarMenu!.setAttribute("borderless","true")
-secondToolbarMenu!.addTab("<bbj-icon name='report-money'></bbj-icon>  Sales"        , -1)
-secondToolbarMenu!.addTab("<bbj-icon name='building'></bbj-icon>      Enterprise"   , -1)
-secondToolbarMenu!.addTab("<bbj-icon name='credit-card'></bbj-icon>   Payments"     , -1)
-secondToolbarMenu!.addTab("<bbj-icon name='history'></bbj-icon>       History"      , -1)
+secondToolbarMenu!.addTab("<dwc-icon name='report-money'></dwc-icon>  Sales"        , -1)
+secondToolbarMenu!.addTab("<dwc-icon name='building'></dwc-icon>      Enterprise"   , -1)
+secondToolbarMenu!.addTab("<dwc-icon name='credit-card'></dwc-icon>   Payments"     , -1)
+secondToolbarMenu!.addTab("<dwc-icon name='history'></dwc-icon>       History"      , -1)
 
 rem Drawer
 rem ==================
 drawer! = app!.getDrawer()
-drawer!.addStyle("bbj-drawer")
+drawer!.addStyle("dwc-drawer")
 
 logo! = drawer!.addImageCtrl(imageManager!.loadImageFromFile("./assets/logo.png"))
-logo!.addStyle("bbj-logo")
+logo!.addStyle("dwc-logo")
 
 drawerMenu! = drawer!.addTabCtrl()
 drawerMenu!.setCallback(drawerMenu!.ON_TAB_SELECT,"onPageChanged")
 drawerMenu!.setAttribute("nobody","true")
 drawerMenu!.setAttribute("borderless","true")
 drawerMenu!.setAttribute("placement","left")
-drawerMenu!.addTab("<bbj-icon name='dashboard'></bbj-icon>      Dashboard"    , -1)
-drawerMenu!.addTab("<bbj-icon name='shopping-cart'></bbj-icon>  Orders"       , -1)
-drawerMenu!.addTab("<bbj-icon name='users'></bbj-icon>          Customers"    , -1)
-drawerMenu!.addTab("<bbj-icon name='box'></bbj-icon>            Products"     , -1)
-drawerMenu!.addTab("<bbj-icon name='files'></bbj-icon>          Documents"    , -1)
-drawerMenu!.addTab("<bbj-icon name='checklist'></bbj-icon>      Tasks"        , -1)
-drawerMenu!.addTab("<bbj-icon name='chart-dots-2'></bbj-icon>   Analytics"    , -1)
+drawerMenu!.addTab("<dwc-icon name='dashboard'></dwc-icon>      Dashboard"    , -1)
+drawerMenu!.addTab("<dwc-icon name='shopping-cart'></dwc-icon>  Orders"       , -1)
+drawerMenu!.addTab("<dwc-icon name='users'></dwc-icon>          Customers"    , -1)
+drawerMenu!.addTab("<dwc-icon name='box'></dwc-icon>            Products"     , -1)
+drawerMenu!.addTab("<dwc-icon name='files'></dwc-icon>          Documents"    , -1)
+drawerMenu!.addTab("<dwc-icon name='checklist'></dwc-icon>      Tasks"        , -1)
+drawerMenu!.addTab("<dwc-icon name='chart-dots-2'></dwc-icon>   Analytics"    , -1)
 
 rem Content
 rem ==================
 content! = app!.getContent()
-content!.addStyle("bbj-content")
+content!.addStyle("dwc-content")
 pageHeader! = content!.addStaticText("<html><h1>Application Title</h1></html>")
 
 lorem! = "
@@ -620,7 +620,7 @@ lorem! = "
 
 for i=1 to 10
     card! = content!.addChildWindow("", $00108000$, sysgui!.getAvailableContext())
-    card!.addStyle("bbj-card")
+    card!.addStyle("dwc-card")
     cardTitle! = card!.addStaticText("<html><h2>What is Lorem Ipsum (" + str(i) +")?</h2></html>")
     cardContent! = card!.addStaticText("<html><p>" + lorem! + "</p></html>")
 next 
@@ -658,10 +658,10 @@ This type of navigation is specifically popular in mobile apps.
 
   <div class="demo__buttons demo__buttons--hasFooter">
     <a  data-action-toggle-code>
-      <bbj-icon name="chevron-down"></bbj-icon> Show code
+      <dwc-icon name="chevron-down"></dwc-icon> Show code
     </a>
     <a data-action-open-link>
-      <bbj-icon name="external-link"></bbj-icon> Open in new tab
+      <dwc-icon name="external-link"></dwc-icon> Open in new tab
     </a>  
   </div>
 
@@ -671,25 +671,25 @@ This type of navigation is specifically popular in mobile apps.
 style! = "
 : body,html {overflow: hidden}
 :
-: .bbj-toolbar {
+: .dwc-toolbar {
 :    display: flex;
 :    align-items: center;
-:    gap: var(--bbj-space-m);
-:    padding: 0 var(--bbj-space-m);
+:    gap: var(--dwc-space-m);
+:    padding: 0 var(--dwc-space-m);
 : }
 :
-: .bbj-logo {
+: .dwc-logo {
 :    display: flex;
 :    align-items: center;
 :    justify-content: center;
 : }
 :
-: .bbj-logo img {
+: .dwc-logo img {
 :    height: 24px;
 : }
 :
 : @media (max-width: 600px) {  
-:  bbj-tab::part(title) { 
+:  dwc-tab::part(title) { 
 :     display: none;
 :   }    
 : }
@@ -717,15 +717,15 @@ rem Header
 rem ==================
 header! = app!.getHeader()
 toolbar! = header!.addChildWindow("", $00108800$, sysgui!.getAvailableContext())
-toolbar!.addStyle("bbj-toolbar")
+toolbar!.addStyle("dwc-toolbar")
 logo! = toolbar!.addImageCtrl(imageManager!.loadImageFromFile("./assets/logo.png"))
-logo!.addStyle("bbj-logo")
+logo!.addStyle("dwc-logo")
 toolbar!.addStaticText("<html><h3>DWC Application</h3></html>")
 
 rem Footer
 rem ==================
 footer! = app!.getFooter()
-footer!.addStyle("bbj-footer")
+footer!.addStyle("dwc-footer")
 
 footerMenu! = footer!.addTabCtrl()
 footerMenu!.setCallback(footerMenu!.ON_TAB_SELECT, "onPageChanged")
@@ -733,11 +733,11 @@ footerMenu!.setAttribute("nobody","true")
 footerMenu!.setAttribute("borderless","true")
 footerMenu!.setAttribute("placement","bottom")
 footerMenu!.setAttribute("alignment","stretch")
-footerMenu!.addTab("<bbj-icon expanse='s' name='dashboard'></bbj-icon>      <span part='title'>Dashboard</span>"    , -1)
-footerMenu!.addTab("<bbj-icon expanse='s' name='shopping-cart'></bbj-icon>  <span part='title'>Orders</span>"       , -1)
-footerMenu!.addTab("<bbj-icon expanse='s' name='users'></bbj-icon>          <span part='title'>Customers</span>"    , -1)
-footerMenu!.addTab("<bbj-icon expanse='s' name='box'></bbj-icon>            <span part='title'>Products</span>"     , -1)
-footerMenu!.addTab("<bbj-icon expanse='s' name='files'></bbj-icon>          <span part='title'>Documents</span>"    , -1)
+footerMenu!.addTab("<dwc-icon expanse='s' name='dashboard'></dwc-icon>      <span part='title'>Dashboard</span>"    , -1)
+footerMenu!.addTab("<dwc-icon expanse='s' name='shopping-cart'></dwc-icon>  <span part='title'>Orders</span>"       , -1)
+footerMenu!.addTab("<dwc-icon expanse='s' name='users'></dwc-icon>          <span part='title'>Customers</span>"    , -1)
+footerMenu!.addTab("<dwc-icon expanse='s' name='box'></dwc-icon>            <span part='title'>Products</span>"     , -1)
+footerMenu!.addTab("<dwc-icon expanse='s' name='files'></dwc-icon>          <span part='title'>Documents</span>"    , -1)
 
 rem Content
 rem ==================
@@ -774,10 +774,10 @@ Same as `BBjAppLayout:HeaderReveal`, `BBjAppLayout:FooterReveal` is supported. W
 
   <div class="demo__buttons demo__buttons--hasFooter">
     <a  data-action-toggle-code>
-      <bbj-icon name="chevron-down"></bbj-icon> Show code
+      <dwc-icon name="chevron-down"></dwc-icon> Show code
     </a>
     <a data-action-open-link>
-      <bbj-icon name="external-link"></bbj-icon> Open in new tab
+      <dwc-icon name="external-link"></dwc-icon> Open in new tab
     </a>  
   </div>
 
@@ -787,40 +787,40 @@ Same as `BBjAppLayout:HeaderReveal`, `BBjAppLayout:FooterReveal` is supported. W
 style! = "
 : body,html {overflow: hidden}
 :
-: .bbj-toolbar {
+: .dwc-toolbar {
 :    display: flex;
 :    align-items: center;
-:    gap: var(--bbj-space-m);
-:    padding: 0 var(--bbj-space-m);
-:    background-color: var(--bbj-color-primary);
-:    color: var(--bbj-color-on-primary-text);
+:    gap: var(--dwc-space-m);
+:    padding: 0 var(--dwc-space-m);
+:    background-color: var(--dwc-color-primary);
+:    color: var(--dwc-color-on-primary-text);
 : }
 :
-: .bbj-logo {
+: .dwc-logo {
 :    display: flex;
 :    align-items: center;
 :    justify-content: center;
 : }
 :
-: .bbj-logo img {
+: .dwc-logo img {
 :    height: 24px;
 : }
 :
-: .bbj-content {
+: .dwc-content {
 :   max-width: 600px;
 :   margin: 0 auto; 
 : }
 :    
-: .bbj-card {
-:    padding: var(--bbj-space-m);
-:    margin: var(--bbj-space-m) 0;
-:    border: thin solid var(--bbj-color-default);
-:    border-radius: var(--bbj-border-radius-m);
-:    background-color: var(--bbj-surface-3);
+: .dwc-card {
+:    padding: var(--dwc-space-m);
+:    margin: var(--dwc-space-m) 0;
+:    border: thin solid var(--dwc-color-default);
+:    border-radius: var(--dwc-border-radius-m);
+:    background-color: var(--dwc-surface-3);
 : }
 :    
 : @media (max-width: 600px) {  
-:  bbj-tab::part(title) { 
+:  dwc-tab::part(title) { 
 :     display: none;
 :   }    
 : }
@@ -849,15 +849,15 @@ rem Header
 rem ==================
 header! = app!.getHeader()
 toolbar! = header!.addChildWindow("", $00108800$, sysgui!.getAvailableContext())
-toolbar!.addStyle("bbj-toolbar")
+toolbar!.addStyle("dwc-toolbar")
 logo! = toolbar!.addImageCtrl(imageManager!.loadImageFromFile("./assets/logo.png"))
-logo!.addStyle("bbj-logo")
+logo!.addStyle("dwc-logo")
 toolbar!.addStaticText("<html><h3>DWC Application</h3></html>")
 
 rem Footer
 rem ==================
 footer! = app!.getFooter()
-footer!.addStyle("bbj-footer")
+footer!.addStyle("dwc-footer")
 
 footerMenu! = footer!.addTabCtrl()
 footerMenu!.setCallback(footerMenu!.ON_TAB_SELECT, "onPageChanged")
@@ -865,16 +865,16 @@ footerMenu!.setAttribute("nobody","true")
 footerMenu!.setAttribute("borderless","true")
 footerMenu!.setAttribute("placement","bottom")
 footerMenu!.setAttribute("alignment","stretch")
-footerMenu!.addTab("<bbj-icon expanse='s' name='dashboard'></bbj-icon>      <span part='title'>Dashboard</span>"    , -1)
-footerMenu!.addTab("<bbj-icon expanse='s' name='shopping-cart'></bbj-icon>  <span part='title'>Orders</span>"       , -1)
-footerMenu!.addTab("<bbj-icon expanse='s' name='users'></bbj-icon>          <span part='title'>Customers</span>"    , -1)
-footerMenu!.addTab("<bbj-icon expanse='s' name='box'></bbj-icon>            <span part='title'>Products</span>"     , -1)
-footerMenu!.addTab("<bbj-icon expanse='s' name='files'></bbj-icon>          <span part='title'>Documents</span>"    , -1)
+footerMenu!.addTab("<dwc-icon expanse='s' name='dashboard'></dwc-icon>      <span part='title'>Dashboard</span>"    , -1)
+footerMenu!.addTab("<dwc-icon expanse='s' name='shopping-cart'></dwc-icon>  <span part='title'>Orders</span>"       , -1)
+footerMenu!.addTab("<dwc-icon expanse='s' name='users'></dwc-icon>          <span part='title'>Customers</span>"    , -1)
+footerMenu!.addTab("<dwc-icon expanse='s' name='box'></dwc-icon>            <span part='title'>Products</span>"     , -1)
+footerMenu!.addTab("<dwc-icon expanse='s' name='files'></dwc-icon>          <span part='title'>Documents</span>"    , -1)
 
 rem Content
 rem ==================
 content! = app!.getContent()
-content!.addStyle("bbj-content")
+content!.addStyle("dwc-content")
 pageHeader! = content!.addStaticText("<html><h1>Application Title</h1></html>")
 
 lorem! = "
@@ -891,7 +891,7 @@ lorem! = "
 
 for i=1 to 10
     card! = content!.addChildWindow("", $00108000$, sysgui!.getAvailableContext())
-    card!.addStyle("bbj-card")
+    card!.addStyle("dwc-card")
     cardTitle! = card!.addStaticText("<html><h2>What is Lorem Ipsum (" + str(i) +")?</h2></html>")
     cardContent! = card!.addStaticText("<html><p>" + lorem! + "</p></html>")
 next 
