@@ -1,24 +1,24 @@
 style! = "
 : body,html {overflow: hidden}
-: h3 {margin: var(--bbj-space-m) 0}
+: h3 {margin: var(--dwc-space-m) 0}
 :
-: .bbj-toolbar {
+: .dwc-toolbar {
 :    display: flex;
 :    align-items: center;
-:    gap: var(--bbj-space-m);
-:    padding: 0 var(--bbj-space-m);
+:    gap: var(--dwc-space-m);
+:    padding: 0 var(--dwc-space-m);
 : }
 :
-: .bbj-logo {
+: .dwc-logo {
 :    display: flex;
 :    align-items: center;
 :    justify-content: center;
-:    padding: var(--bbj-space-m) 0;
-:    margin-bottom: var(--bbj-space-m);
-:    border-bottom: thin solid var(--bbj-color-default)
+:    padding: var(--dwc-space-m) 0;
+:    margin-bottom: var(--dwc-space-m);
+:    border-bottom: thin solid var(--dwc-color-default)
 : }
 :
-: .bbj-logo img {
+: .dwc-logo img {
 :    max-width: 100px;
 : }
 :"
@@ -44,40 +44,40 @@ rem ==================
 declare auto BBjChildWindow header!
 header! = app!.getHeader()
 firstToolbar! = header!.addChildWindow("", $00108800$, sysgui!.getAvailableContext())
-firstToolbar!.addStyle("bbj-toolbar")
-firstToolbar!.addStaticText("<html><bbj-icon-button name='menu-2' data-drawer-toggle></bbj-icon-button></html>")
+firstToolbar!.addStyle("dwc-toolbar")
+firstToolbar!.addStaticText("<html><dwc-icon-button name='menu-2' data-drawer-toggle></dwc-icon-button></html>")
 firstToolbar!.addStaticText("<html><h3>DWC Application</h3></html>")
 
 secondToolbar! = header!.addChildWindow("", $00108800$, sysgui!.getAvailableContext())
 secondToolbarMenu! = secondToolbar!.addTabCtrl()
 secondToolbarMenu!.setAttribute("nobody","true")
 secondToolbarMenu!.setAttribute("borderless","true")
-secondToolbarMenu!.addTab("<bbj-icon name='report-money'></bbj-icon>  Sales"        , -1)
-secondToolbarMenu!.addTab("<bbj-icon name='building'></bbj-icon>      Enterprise"   , -1)
-secondToolbarMenu!.addTab("<bbj-icon name='credit-card'></bbj-icon>   Payments"     , -1)
-secondToolbarMenu!.addTab("<bbj-icon name='history'></bbj-icon>       History"      , -1)
+secondToolbarMenu!.addTab("<dwc-icon name='report-money'></dwc-icon>  Sales"        , -1)
+secondToolbarMenu!.addTab("<dwc-icon name='building'></dwc-icon>      Enterprise"   , -1)
+secondToolbarMenu!.addTab("<dwc-icon name='credit-card'></dwc-icon>   Payments"     , -1)
+secondToolbarMenu!.addTab("<dwc-icon name='history'></dwc-icon>       History"      , -1)
 
 rem Drawer
 rem ==================
 declare auto BBjChildWindow drawer!
 drawer! = app!.getDrawer()
-drawer!.addStyle("bbj-drawer")
+drawer!.addStyle("dwc-drawer")
 
 logo! = drawer!.addImageCtrl(imageManager!.loadImageFromFile("./assets/logo.png"))
-logo!.addStyle("bbj-logo")
+logo!.addStyle("dwc-logo")
 
 drawerMenu! = drawer!.addTabCtrl()
 drawerMenu!.setCallback(drawerMenu!.ON_TAB_SELECT, "onPageChanged")
 drawerMenu!.setAttribute("nobody","true")
 drawerMenu!.setAttribute("borderless","true")
 drawerMenu!.setAttribute("placement","left")
-drawerMenu!.addTab("<bbj-icon name='dashboard'></bbj-icon>      Dashboard"    , -1)
-drawerMenu!.addTab("<bbj-icon name='shopping-cart'></bbj-icon>  Orders"       , -1)
-drawerMenu!.addTab("<bbj-icon name='users'></bbj-icon>          Customers"    , -1)
-drawerMenu!.addTab("<bbj-icon name='box'></bbj-icon>            Products"     , -1)
-drawerMenu!.addTab("<bbj-icon name='files'></bbj-icon>          Documents"    , -1)
-drawerMenu!.addTab("<bbj-icon name='checklist'></bbj-icon>      Tasks"        , -1)
-drawerMenu!.addTab("<bbj-icon name='chart-dots-2'></bbj-icon>   Analytics"    , -1)
+drawerMenu!.addTab("<dwc-icon name='dashboard'></dwc-icon>      Dashboard"    , -1)
+drawerMenu!.addTab("<dwc-icon name='shopping-cart'></dwc-icon>  Orders"       , -1)
+drawerMenu!.addTab("<dwc-icon name='users'></dwc-icon>          Customers"    , -1)
+drawerMenu!.addTab("<dwc-icon name='box'></dwc-icon>            Products"     , -1)
+drawerMenu!.addTab("<dwc-icon name='files'></dwc-icon>          Documents"    , -1)
+drawerMenu!.addTab("<dwc-icon name='checklist'></dwc-icon>      Tasks"        , -1)
+drawerMenu!.addTab("<dwc-icon name='chart-dots-2'></dwc-icon>   Analytics"    , -1)
 
 rem Content
 rem ==================

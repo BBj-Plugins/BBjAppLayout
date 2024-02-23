@@ -10,8 +10,8 @@
   <a href="https://github.com/necolas/issue-guidelines/blob/master/CONTRIBUTING.md#pull-requests">
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs welcome!" />
   </a>
-   <a href="https://basishub.github.io/basis-next/#/dwc/bbj-appl-layout">
-    <img src="https://img.shields.io/badge/Component-bbj--app--layout-%23006aff" alt="Tag Name">
+   <a href="https://basishub.github.io/basis-next/#/dwc/dwc-appl-layout">
+    <img src="https://img.shields.io/badge/Component-dwc--app--layout-%23006aff" alt="Tag Name">
   </a>
 </p>
 

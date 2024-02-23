@@ -9,11 +9,11 @@
     <title>BBjAppLayout - Footer Reveal</title>
     <script
       type="module"
-      src="//s3-eu-west-1.amazonaws.com/cdn.bbx.kitchen/next/bbj-ui.esm.js"
+      src="//s3-eu-west-1.amazonaws.com/cdn.bbx.kitchen/next/dwc-ui.esm.js"
     ></script>
-    <script nomodule src="//s3-eu-west-1.amazonaws.com/cdn.bbx.kitchen/next/bbj-ui.js"></script>
+    <script nomodule src="//s3-eu-west-1.amazonaws.com/cdn.bbx.kitchen/next/dwc-ui.js"></script>
 
-    <link rel="stylesheet" href="//s3-eu-west-1.amazonaws.com/cdn.bbx.kitchen/next/bbj-ui.css" />
+    <link rel="stylesheet" href="//s3-eu-west-1.amazonaws.com/cdn.bbx.kitchen/next/dwc-ui.css" />
     <style>
       html,
       body {
@@ -21,42 +21,42 @@
         margin: 0;
         padding: 0;
       }
-      h3 {margin: var(--bbj-space-m) 0}
+      h3 {margin: var(--dwc-space-m) 0}
 
-      .bbj-logo {
+      .dwc-logo {
         display: flex;
         align-items: center;
         justify-content: center;
       }
 
-      .bbj-logo img {
+      .dwc-logo img {
         max-width: 24px;
       }
 
-      .bbj-toolbar {
+      .dwc-toolbar {
         display: flex;
         align-items: center;
-        gap: var(--bbj-space-m);
-        padding: 0 var(--bbj-space-m);
-        background-color: var(--bbj-color-primary);
-        color: var(--bbj-color-on-primary-text);
+        gap: var(--dwc-space-m);
+        padding: 0 var(--dwc-space-m);
+        background-color: var(--dwc-color-primary);
+        color: var(--dwc-color-on-primary-text);
       }
 
-      .bbj-content {
+      .dwc-content {
         max-width: 600px;
         margin: 0 auto;
       }
 
-      .bbj-card {
-        padding: var(--bbj-space-m);
-        margin: var(--bbj-space-m) 0;
-        border: thin solid var(--bbj-color-default);
-        border-radius: var(--bbj-border-radius-m);
-        background-color: var(--bbj-surface-3);
+      .dwc-card {
+        padding: var(--dwc-space-m);
+        margin: var(--dwc-space-m) 0;
+        border: thin solid var(--dwc-color-default);
+        border-radius: var(--dwc-border-radius-m);
+        background-color: var(--dwc-surface-3);
       }
 
       @media (max-width: 600px) {
-        bbj-tab span {
+        dwc-tab span {
           display: none;
         }
       }
@@ -65,50 +65,50 @@
 
   <body>
     <div>
-      <bbj-app-layout fit-viewport drawer-placement="hidden" footer-reveal footer-shadow="scroll">
+      <dwc-app-layout fit-viewport drawer-placement="hidden" footer-reveal footer-shadow="scroll">
         <div slot="header">
-          <div class="bbj-toolbar">
-            <div class="bbj-logo">
+          <div class="dwc-toolbar">
+            <div class="dwc-logo">
               <img src="./assets/logo.png" alt="logo" />
             </div>
             <h3 data-app-title>DWC Application</h3>
           </div>
         </div>
 
-        <div slot="footer" class="bbj-footer">
-          <bbj-tabs-list
+        <div slot="footer" class="dwc-footer">
+          <dwc-tabbed-pane
             placement="bottom"
             alignment="stretch"
             nobody
             borderless
           >
-            <bbj-tab slot="nav" data-name="Dashboard">
-              <bbj-icon expanse="s" name="dashboard"></bbj-icon>
+            <dwc-tab slot="nav" data-name="Dashboard">
+              <dwc-icon expanse="s" name="dashboard"></dwc-icon>
               <span>Dashboard</span>
-            </bbj-tab>
-            <bbj-tab slot="nav" data-name="Orders">
-              <bbj-icon expanse="s" name="shopping-cart"></bbj-icon>
+            </dwc-tab>
+            <dwc-tab slot="nav" data-name="Orders">
+              <dwc-icon expanse="s" name="shopping-cart"></dwc-icon>
               <span>Orders</span>
-            </bbj-tab>
-            <bbj-tab slot="nav" data-name="Customers">
-              <bbj-icon expanse="s" name="users"></bbj-icon>
+            </dwc-tab>
+            <dwc-tab slot="nav" data-name="Customers">
+              <dwc-icon expanse="s" name="users"></dwc-icon>
               <span>Customers</span>
-            </bbj-tab>
-            <bbj-tab slot="nav" data-name="Products">
-              <bbj-icon expanse="s" name="box"></bbj-icon>
+            </dwc-tab>
+            <dwc-tab slot="nav" data-name="Products">
+              <dwc-icon expanse="s" name="box"></dwc-icon>
               <span>Products</span>
-            </bbj-tab>
-            <bbj-tab slot="nav" data-name="Documents">
-              <bbj-icon expanse="s" name="files"></bbj-icon>
+            </dwc-tab>
+            <dwc-tab slot="nav" data-name="Documents">
+              <dwc-icon expanse="s" name="files"></dwc-icon>
               <span>Documents</span>
-            </bbj-tab>
-          </bbj-tabs-list>
+            </dwc-tab>
+          </dwc-tabbed-pane>
         </div>
 
-        <div class="bbj-content">
+        <div class="dwc-content">
           <h1>Application Title</h1>
 
-          <div class="bbj-card">
+          <div class="dwc-card">
             <h2>What is Lorem Ipsum (1)?</h2>
             <p>
               Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -122,7 +122,7 @@
               like Aldus PageMaker including versions of Lorem Ipsum.
             </p>
           </div>
-          <div class="bbj-card">
+          <div class="dwc-card">
             <h2>What is Lorem Ipsum (2)?</h2>
             <p>
               Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -136,7 +136,7 @@
               like Aldus PageMaker including versions of Lorem Ipsum.
             </p>
           </div>
-          <div class="bbj-card">
+          <div class="dwc-card">
             <h2>What is Lorem Ipsum (3)?</h2>
             <p>
               Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -150,7 +150,7 @@
               like Aldus PageMaker including versions of Lorem Ipsum.
             </p>
           </div>
-          <div class="bbj-card">
+          <div class="dwc-card">
             <h2>What is Lorem Ipsum (4)?</h2>
             <p>
               Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -164,7 +164,7 @@
               like Aldus PageMaker including versions of Lorem Ipsum.
             </p>
           </div>
-          <div class="bbj-card">
+          <div class="dwc-card">
             <h2>What is Lorem Ipsum (5)?</h2>
             <p>
               Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -179,13 +179,13 @@
             </p>
           </div>
         </div>
-      </bbj-app-layout>
+      </dwc-app-layout>
 
       <script>
         const tabs = document.querySelector(
-          'bbj-tabs-list[placement="bottom"]'
+          'dwc-tabbed-pane[placement="bottom"]'
         );
-        tabs.addEventListener("bbj-tab-selected", (e) => {
+        tabs.addEventListener("dwc-tab-selected", (e) => {
           const content = document.querySelector("h1");
           content.innerHTML = `${e.detail.tab.dataset.name} Page`;
         });

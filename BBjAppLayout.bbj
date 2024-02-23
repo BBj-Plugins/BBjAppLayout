@@ -91,7 +91,7 @@ class public BBjAppLayout
   rem  */
   field public BBjNumber DrawerPlacement! = BBjAppLayout.DRAWER_PLACEMENT_LEFT
   rem /**
-  rem  * The drawer width.  If the drawer width is set in CSS using the `--bbj-app-layout-drawer-width`
+  rem  * The drawer width.  If the drawer width is set in CSS using the `--dwc-app-layout-drawer-width`
   rem  * custom property, this property will be ignored.
   rem  */
   field public BBjString DrawerWidth! = "16em"
@@ -165,14 +165,14 @@ class public BBjAppLayout
   rem */
   method public BBjAppLayout(BBjWindow window!)
     #Window! = window!
-    #WebComponent! = window!.addWebComponent("bbj-app-layout")
+    #WebComponent! = window!.addWebComponent("dwc-app-layout")
     #WebComponent!.setStyle("width","")
     #WebComponent!.setStyle("height","")
     #WebComponent!.setAttribute("fit-viewport", "")
     #WebComponent!.setTabTraversable(0)
     #WebComponent!.setFocusable(0)
-    #WebComponent!.setCallback("bbj-drawer-opened", #this!, "handleClientEvents")
-    #WebComponent!.setCallback("bbj-drawer-closed", #this!, "handleClientEvents")
+    #WebComponent!.setCallback("dwc-drawer-opened", #this!, "handleClientEvents")
+    #WebComponent!.setCallback("dwc-drawer-closed", #this!, "handleClientEvents")
   methodend
   rem /**
   rem  * Gets the components's id.
@@ -280,12 +280,12 @@ class public BBjAppLayout
   rem  */
   method public void setDrawerWidth(BBjString width!)
     #DrawerWidth! = width!
-    #getWebComponent().setStyle("--bbj-app-layout-drawer-width", width!)
+    #getWebComponent().setStyle("--dwc-app-layout-drawer-width", width!)
   methodend
   rem /**
   rem  * Set the drawer width.
   rem  *
-  rem  * If the drawer width set in CSS using the `--bbj-app-layout-drawer-width` custom property
+  rem  * If the drawer width set in CSS using the `--dwc-app-layout-drawer-width` custom property
   rem  * then this property will be ignored.
   rem  *
   rem  * @param width! the width of the drawer
@@ -567,12 +567,12 @@ class public BBjAppLayout
   rem  */
   method public void handleClientEvents(BBjWebEvent ev!)
     type$ = ev!.getEventType()
-    payload! = new BBjAppLayoutEventImpl(#this!, iff(type$ = "bbj-drawer-opened", 1, 0))
+    payload! = new BBjAppLayoutEventImpl(#this!, iff(type$ = "dwc-drawer-opened", 1, 0))
     switch type$
-      case "bbj-drawer-opened"
+      case "dwc-drawer-opened"
         BBjAPI().postPriorityCustomEvent(str(#this!) + str(BBjAppLayout.ON_DRAWER_OPENED), payload!)
         break
-      case "bbj-drawer-closed"
+      case "dwc-drawer-closed"
         BBjAPI().postPriorityCustomEvent(str(#this!) + str(BBjAppLayout.ON_DRAWER_CLOSED), payload!)
         break
       case default
